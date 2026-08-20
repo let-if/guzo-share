@@ -920,7 +920,7 @@
 //   formTitle: { fontSize: 14, fontWeight: '900', color: '#0F172A', marginBottom: 10 },
 // });
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Alert, SafeAreaView, Platform, Linking, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Alert, SafeAreaView, Platform, Linking, StatusBar, Dimensions } from 'react-native';
 import axios from 'axios';
 import * as Location from 'expo-location';
 import LiveMap from '../components/LiveMap';
@@ -1316,10 +1316,10 @@ export default function HomeScreen() {
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#0F172A" barStyle="light-content" />
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar backgroundColor="#0F172A" barStyle="light-content" translucent={false} />
       
-      {/* Top Header Bar - Fixed and Safe from Status Bar */}
+      {/* Absolute Protected Header Bar */}
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>ጉዞ-ሼር <Text style={{color: '#10B981'}}>Guzo</Text></Text>
@@ -1343,356 +1343,357 @@ export default function HomeScreen() {
         </View>
       )}
 
-      {/* Landing Page */}
-      {!user && authView === 'welcome' && (
-        <ScrollView contentContainerStyle={styles.welcomeContainer} showsVerticalScrollIndicator={false}>
-          <View style={styles.heroCard3D}>
-            <View style={styles.heroGlowOverlay} />
-            <View style={styles.heroBadgeRow}>
-              <View style={styles.heroIconCircle}>
-                <Text style={styles.heroEmoji}>🚘⚡</Text>
-              </View>
-              <View style={styles.livePulseBadge}>
-                <View style={styles.pulseDot} />
-                <Text style={styles.livePulseText}>LIVE INTERCITY POOL</Text>
-              </View>
-            </View>
-
-            <Text style={styles.authTitle}>{currentText.welcomeTitle}</Text>
-            <Text style={styles.authSubtitle}>{currentText.welcomeSubtitle}</Text>
-
-            <View style={styles.metricStrip3D}>
-              <View style={styles.metricItem}>
-                <Text style={styles.metricVal}>100%</Text>
-                <Text style={styles.metricLbl}>Verified IDs</Text>
-              </View>
-              <View style={styles.metricDivider} />
-              <View style={styles.metricItem}>
-                <Text style={styles.metricVal}>40-60%</Text>
-                <Text style={styles.metricLbl}>Fare Savings</Text>
-              </View>
-              <View style={styles.metricDivider} />
-              <View style={styles.metricItem}>
-                <Text style={styles.metricVal}>GPS</Text>
-                <Text style={styles.metricLbl}>Live Radar</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.welcomeButtonGroup}>
-            <TouchableOpacity style={styles.glowPrimaryBtn} onPress={() => setAuthView('signup')} activeOpacity={0.85}>
-              <Text style={styles.glowPrimaryBtnText}>⚡ {currentText.signUpNavBtn}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.glossSecondaryBtn} onPress={() => setAuthView('signin')} activeOpacity={0.85}>
-              <Text style={styles.glossSecondaryBtnText}>{currentText.signInNavBtn}</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      )}
-
-      {/* Sign In Screen */}
-      {!user && authView === 'signin' && (
-        <ScrollView contentContainerStyle={styles.authContainer}>
-          <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
-            <Text style={styles.backLinkText}>{currentText.backBtn}</Text>
-          </TouchableOpacity>
-          <Text style={styles.authTitle}>{currentText.signInTitle}</Text>
-          <Text style={styles.authSubtitle}>{currentText.signInSubtitle}</Text>
-
-          <Text style={styles.label}>{currentText.phoneLabel}</Text>
-          <TextInput style={styles.input3D} placeholder="0911223344" placeholderTextColor="#94A3B8" keyboardType="phone-pad" value={phoneInput} onChangeText={setPhoneInput} />
-
-          <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handleSignIn} activeOpacity={0.8}>
-            <Text style={styles.glowPrimaryBtnText}>{currentText.signInBtn}</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      )}
-
-      {/* Sign Up Screen */}
-      {!user && authView === 'signup' && (
-        <ScrollView contentContainerStyle={styles.authContainer}>
-          <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
-            <Text style={styles.backLinkText}>{currentText.backBtn}</Text>
-          </TouchableOpacity>
-          <Text style={styles.authTitle}>{currentText.signUpTitle}</Text>
-          <Text style={styles.authSubtitle}>{currentText.signUpSubtitle}</Text>
-
-          <Text style={styles.label}>{currentText.nameLabel}</Text>
-          <TextInput style={styles.input3D} placeholder="Abebe Kebede" placeholderTextColor="#94A3B8" value={fullNameInput} onChangeText={setFullNameInput} />
-
-          <Text style={styles.label}>{currentText.phoneLabel}</Text>
-          <TextInput style={styles.input3D} placeholder="0911223344" placeholderTextColor="#94A3B8" keyboardType="phone-pad" value={phoneInput} onChangeText={setPhoneInput} />
-
-          <Text style={styles.label}>{currentText.roleLabel}</Text>
-          <View style={styles.roleRow}>
-            <TouchableOpacity style={[styles.roleCard3D, selectedRole === 'passenger' && styles.selectedRoleCard3D]} onPress={() => setSelectedRole('passenger')} activeOpacity={0.8}>
-              <Text style={[styles.roleText, selectedRole === 'passenger' && styles.selectedRoleText3D]}>{currentText.passengerRole}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.roleCard3D, selectedRole === 'driver' && styles.selectedRoleCard3D]} onPress={() => setSelectedRole('driver')} activeOpacity={0.8}>
-              <Text style={[styles.roleText, selectedRole === 'driver' && styles.selectedRoleText3D]}>{currentText.driverRole}</Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handleSignUp} activeOpacity={0.8}>
-            <Text style={styles.glowPrimaryBtnText}>{currentText.signUpBtn}</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      )}
-
-      {/* Authenticated Dashboard - Completely Scrollable Layout */}
-      {user && (
-        <ScrollView contentContainerStyle={styles.dashboardScrollContainer} showsVerticalScrollIndicator={false}>
-          <View style={styles.tabContainer3D}>
-            <TouchableOpacity style={[styles.tab3D, activeTab === 'feed' && styles.activeTab3D]} onPress={() => setActiveTab('feed')} activeOpacity={0.8}>
-              <Text style={[styles.tabText3D, activeTab === 'feed' && styles.activeTabText3D]}>{currentText.findRide}</Text>
-            </TouchableOpacity>
-
-            {user.role === 'passenger' && (
-              <TouchableOpacity style={[styles.tab3D, activeTab === 'bookings' && styles.activeTab3D]} onPress={() => setActiveTab('bookings')} activeOpacity={0.8}>
-                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6}}>
-                  <Text style={[styles.tabText3D, activeTab === 'bookings' && styles.activeTabText3D]}>{currentText.myBookings}</Text>
-                  {unreadCount > 0 && <View style={styles.notificationDot} />}
+      {/* Main Scrollable Body */}
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        {/* Landing Page */}
+        {!user && authView === 'welcome' && (
+          <View style={styles.welcomeWrapper}>
+            <View style={styles.heroCard3D}>
+              <View style={styles.heroGlowOverlay} />
+              <View style={styles.heroBadgeRow}>
+                <View style={styles.heroIconCircle}>
+                  <Text style={styles.heroEmoji}>🚘⚡</Text>
                 </View>
-              </TouchableOpacity>
-            )}
+                <View style={styles.livePulseBadge}>
+                  <View style={styles.pulseDot} />
+                  <Text style={styles.livePulseText}>LIVE INTERCITY POOL</Text>
+                </View>
+              </View>
 
-            {user.role === 'driver' && (
-              <>
-                <TouchableOpacity style={[styles.tab3D, activeTab === 'post' && styles.activeTab3D]} onPress={() => setActiveTab('post')} activeOpacity={0.8}>
-                  <Text style={[styles.tabText3D, activeTab === 'post' && styles.activeTabText3D]}>{currentText.postTrip}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.tab3D, activeTab === 'requests' && styles.activeTab3D]} onPress={() => setActiveTab('requests')} activeOpacity={0.8}>
+              <Text style={styles.authTitle}>{currentText.welcomeTitle}</Text>
+              <Text style={styles.authSubtitle}>{currentText.welcomeSubtitle}</Text>
+
+              <View style={styles.metricStrip3D}>
+                <View style={styles.metricItem}>
+                  <Text style={styles.metricVal}>100%</Text>
+                  <Text style={styles.metricLbl}>Verified IDs</Text>
+                </View>
+                <View style={styles.metricDivider} />
+                <View style={styles.metricItem}>
+                  <Text style={styles.metricVal}>40-60%</Text>
+                  <Text style={styles.metricLbl}>Fare Savings</Text>
+                </View>
+                <View style={styles.metricDivider} />
+                <View style={styles.metricItem}>
+                  <Text style={styles.metricVal}>GPS</Text>
+                  <Text style={styles.metricLbl}>Live Radar</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.welcomeButtonGroup}>
+              <TouchableOpacity style={styles.glowPrimaryBtn} onPress={() => setAuthView('signup')} activeOpacity={0.85}>
+                <Text style={styles.glowPrimaryBtnText}>⚡ {currentText.signUpNavBtn}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.glossSecondaryBtn} onPress={() => setAuthView('signin')} activeOpacity={0.85}>
+                <Text style={styles.glossSecondaryBtnText}>{currentText.signInNavBtn}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
+        {/* Sign In Screen */}
+        {!user && authView === 'signin' && (
+          <View style={styles.authContainer}>
+            <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
+              <Text style={styles.backLinkText}>{currentText.backBtn}</Text>
+            </TouchableOpacity>
+            <Text style={styles.authTitle}>{currentText.signInTitle}</Text>
+            <Text style={styles.authSubtitle}>{currentText.signInSubtitle}</Text>
+
+            <Text style={styles.label}>{currentText.phoneLabel}</Text>
+            <TextInput style={styles.input3D} placeholder="0911223344" placeholderTextColor="#94A3B8" keyboardType="phone-pad" value={phoneInput} onChangeText={setPhoneInput} />
+
+            <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handleSignIn} activeOpacity={0.8}>
+              <Text style={styles.glowPrimaryBtnText}>{currentText.signInBtn}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Sign Up Screen */}
+        {!user && authView === 'signup' && (
+          <View style={styles.authContainer}>
+            <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
+              <Text style={styles.backLinkText}>{currentText.backBtn}</Text>
+            </TouchableOpacity>
+            <Text style={styles.authTitle}>{currentText.signUpTitle}</Text>
+            <Text style={styles.authSubtitle}>{currentText.signUpSubtitle}</Text>
+
+            <Text style={styles.label}>{currentText.nameLabel}</Text>
+            <TextInput style={styles.input3D} placeholder="Abebe Kebede" placeholderTextColor="#94A3B8" value={fullNameInput} onChangeText={setFullNameInput} />
+
+            <Text style={styles.label}>{currentText.phoneLabel}</Text>
+            <TextInput style={styles.input3D} placeholder="0911223344" placeholderTextColor="#94A3B8" keyboardType="phone-pad" value={phoneInput} onChangeText={setPhoneInput} />
+
+            <Text style={styles.label}>{currentText.roleLabel}</Text>
+            <View style={styles.roleRow}>
+              <TouchableOpacity style={[styles.roleCard3D, selectedRole === 'passenger' && styles.selectedRoleCard3D]} onPress={() => setSelectedRole('passenger')} activeOpacity={0.8}>
+                <Text style={[styles.roleText, selectedRole === 'passenger' && styles.selectedRoleText3D]}>{currentText.passengerRole}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.roleCard3D, selectedRole === 'driver' && styles.selectedRoleCard3D]} onPress={() => setSelectedRole('driver')} activeOpacity={0.8}>
+                <Text style={[styles.roleText, selectedRole === 'driver' && styles.selectedRoleText3D]}>{currentText.driverRole}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handleSignUp} activeOpacity={0.8}>
+              <Text style={styles.glowPrimaryBtnText}>{currentText.signUpBtn}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Authenticated Dashboard */}
+        {user && (
+          <View style={styles.dashboardBody}>
+            <View style={styles.tabContainer3D}>
+              <TouchableOpacity style={[styles.tab3D, activeTab === 'feed' && styles.activeTab3D]} onPress={() => setActiveTab('feed')} activeOpacity={0.8}>
+                <Text style={[styles.tabText3D, activeTab === 'feed' && styles.activeTabText3D]}>{currentText.findRide}</Text>
+              </TouchableOpacity>
+
+              {user.role === 'passenger' && (
+                <TouchableOpacity style={[styles.tab3D, activeTab === 'bookings' && styles.activeTab3D]} onPress={() => setActiveTab('bookings')} activeOpacity={0.8}>
                   <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6}}>
-                    <Text style={[styles.tabText3D, activeTab === 'requests' && styles.activeTabText3D]}>{currentText.driverRequests}</Text>
+                    <Text style={[styles.tabText3D, activeTab === 'bookings' && styles.activeTabText3D]}>{currentText.myBookings}</Text>
                     {unreadCount > 0 && <View style={styles.notificationDot} />}
                   </View>
                 </TouchableOpacity>
-              </>
-            )}
-          </View>
+              )}
 
-          {activeTab === 'feed' && (
-            <View style={styles.content}>
-              <View style={styles.searchCard3D}>
-                <Text style={styles.searchHeader}>{currentText.liveFeedTitle}</Text>
-                <TextInput style={styles.input3D} placeholder={currentText.searchOriginPlaceholder} placeholderTextColor="#94A3B8" value={inputOrigin} onChangeText={setInputOrigin} />
-                <TextInput style={styles.input3D} placeholder={currentText.searchDestPlaceholder} placeholderTextColor="#94A3B8" value={inputDestination} onChangeText={setInputDestination} />
-                <View style={styles.searchButtonRow}>
-                  <TouchableOpacity style={styles.glowPrimaryBtnSmall} onPress={() => fetchTrips(inputOrigin.trim(), inputDestination.trim())} activeOpacity={0.8}>
-                    <Text style={styles.glowPrimaryBtnTextSmall}>{currentText.searchBtn}</Text>
+              {user.role === 'driver' && (
+                <>
+                  <TouchableOpacity style={[styles.tab3D, activeTab === 'post' && styles.activeTab3D]} onPress={() => setActiveTab('post')} activeOpacity={0.8}>
+                    <Text style={[styles.tabText3D, activeTab === 'post' && styles.activeTabText3D]}>{currentText.postTrip}</Text>
                   </TouchableOpacity>
-                  {(inputOrigin !== '' || inputDestination !== '') ? (
-                    <TouchableOpacity style={styles.glossSecondaryBtnSmall} onPress={() => { setInputOrigin(''); setInputDestination(''); fetchTrips('', ''); }} activeOpacity={0.8}>
-                      <Text style={styles.glossSecondaryBtnTextSmall}>{currentText.clearBtn}</Text>
+                  <TouchableOpacity style={[styles.tab3D, activeTab === 'requests' && styles.activeTab3D]} onPress={() => setActiveTab('requests')} activeOpacity={0.8}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6}}>
+                      <Text style={[styles.tabText3D, activeTab === 'requests' && styles.activeTabText3D]}>{currentText.driverRequests}</Text>
+                      {unreadCount > 0 && <View style={styles.notificationDot} />}
+                    </View>
+                  </TouchableOpacity>
+                </>
+              )}
+            </View>
+
+            {activeTab === 'feed' && (
+              <View style={styles.content}>
+                <View style={styles.searchCard3D}>
+                  <Text style={styles.searchHeader}>{currentText.liveFeedTitle}</Text>
+                  <TextInput style={styles.input3D} placeholder={currentText.searchOriginPlaceholder} placeholderTextColor="#94A3B8" value={inputOrigin} onChangeText={setInputOrigin} />
+                  <TextInput style={styles.input3D} placeholder={currentText.searchDestPlaceholder} placeholderTextColor="#94A3B8" value={inputDestination} onChangeText={setInputDestination} />
+                  <View style={styles.searchButtonRow}>
+                    <TouchableOpacity style={styles.glowPrimaryBtnSmall} onPress={() => fetchTrips(inputOrigin.trim(), inputDestination.trim())} activeOpacity={0.8}>
+                      <Text style={styles.glowPrimaryBtnTextSmall}>{currentText.searchBtn}</Text>
                     </TouchableOpacity>
-                  ) : null}
+                    {(inputOrigin !== '' || inputDestination !== '') ? (
+                      <TouchableOpacity style={styles.glossSecondaryBtnSmall} onPress={() => { setInputOrigin(''); setInputDestination(''); fetchTrips('', ''); }} activeOpacity={0.8}>
+                        <Text style={styles.glossSecondaryBtnTextSmall}>{currentText.clearBtn}</Text>
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
                 </View>
-              </View>
 
-              {trips.length === 0 ? (
-                <Text style={styles.emptyText}>{currentText.noTrips}</Text>
-              ) : (
-                trips.map((item) => {
-                  const currentSeats = selectedSeatsMap[item.id] || 1;
-                  return (
-                    <View key={item.id.toString()} style={styles.tripCard3D}>
-                      <View style={styles.routeRow}>
-                        <Text style={styles.routeText}>{item.origin} <Text style={{color: '#10B981'}}>➔</Text> {item.destination}</Text>
-                        <Text style={styles.priceBadge}>{item.pricePerSeat} ETB</Text>
-                      </View>
-                      <Text style={styles.detailText}>🕒 {new Date(item.departureTime).toLocaleString()}</Text>
-                      <Text style={styles.detailText}>💺 {currentText.seatsLabel}: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.availableSeats}</Text></Text>
-                      <Text style={styles.driverText}>👤 {currentText.driverLabel}: {item.driver.fullName} | 📞 {item.driver.phoneNumber}</Text>
-                      
-                      {user.role === 'passenger' && (
-                        <View style={styles.seatSelectorContainer}>
-                          <Text style={styles.seatSelectorLabel}>Seats to Request:</Text>
-                          <View style={styles.seatCounterRow}>
-                            <TouchableOpacity 
-                              style={styles.seatControlBtn} 
-                              onPress={() => {
-                                if (currentSeats > 1) {
-                                  setSelectedSeatsMap({ ...selectedSeatsMap, [item.id]: currentSeats - 1 });
-                                }
-                              }}
-                              activeOpacity={0.7}
-                            >
-                              <Text style={styles.seatControlText}>-</Text>
-                            </TouchableOpacity>
+                {trips.length === 0 ? (
+                  <Text style={styles.emptyText}>{currentText.noTrips}</Text>
+                ) : (
+                  trips.map((item) => {
+                    const currentSeats = selectedSeatsMap[item.id] || 1;
+                    return (
+                      <View key={item.id.toString()} style={styles.tripCard3D}>
+                        <View style={styles.routeRow}>
+                          <Text style={styles.routeText}>{item.origin} <Text style={{color: '#10B981'}}>➔</Text> {item.destination}</Text>
+                          <Text style={styles.priceBadge}>{item.pricePerSeat} ETB</Text>
+                        </View>
+                        <Text style={styles.detailText}>🕒 {new Date(item.departureTime).toLocaleString()}</Text>
+                        <Text style={styles.detailText}>💺 {currentText.seatsLabel}: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.availableSeats}</Text></Text>
+                        <Text style={styles.driverText}>👤 {currentText.driverLabel}: {item.driver.fullName} | 📞 {item.driver.phoneNumber}</Text>
+                        
+                        {user.role === 'passenger' && (
+                          <View style={styles.seatSelectorContainer}>
+                            <Text style={styles.seatSelectorLabel}>Seats to Request:</Text>
+                            <View style={styles.seatCounterRow}>
+                              <TouchableOpacity 
+                                style={styles.seatControlBtn} 
+                                onPress={() => {
+                                  if (currentSeats > 1) {
+                                    setSelectedSeatsMap({ ...selectedSeatsMap, [item.id]: currentSeats - 1 });
+                                  }
+                                }}
+                                activeOpacity={0.7}
+                              >
+                                <Text style={styles.seatControlText}>-</Text>
+                              </TouchableOpacity>
 
-                            <Text style={styles.seatCountText}>{currentSeats}</Text>
+                              <Text style={styles.seatCountText}>{currentSeats}</Text>
 
-                            <TouchableOpacity 
-                              style={styles.seatControlBtn} 
-                              onPress={() => {
-                                if (currentSeats < item.availableSeats) {
-                                  setSelectedSeatsMap({ ...selectedSeatsMap, [item.id]: currentSeats + 1 });
-                                }
-                              }}
-                              activeOpacity={0.7}
-                            >
-                              <Text style={styles.seatControlText}>+</Text>
+                              <TouchableOpacity 
+                                style={styles.seatControlBtn} 
+                                onPress={() => {
+                                  if (currentSeats < item.availableSeats) {
+                                    setSelectedSeatsMap({ ...selectedSeatsMap, [item.id]: currentSeats + 1 });
+                                  }
+                                }}
+                                activeOpacity={0.7}
+                              >
+                                <Text style={styles.seatControlText}>+</Text>
+                              </TouchableOpacity>
+                            </View>
+
+                            <TouchableOpacity style={styles.actionBtnGlowDark} onPress={() => handleBookSeat(item.id, currentSeats)} activeOpacity={0.8}>
+                              <Text style={styles.actionBtnTextDark}>{currentText.bookSeatBtn} ({currentSeats})</Text>
                             </TouchableOpacity>
                           </View>
+                        )}
 
-                          <TouchableOpacity style={styles.actionBtnGlowDark} onPress={() => handleBookSeat(item.id, currentSeats)} activeOpacity={0.8}>
-                            <Text style={styles.actionBtnTextDark}>{currentText.bookSeatBtn} ({currentSeats})</Text>
+                        {user.role === 'driver' && user.id === item.driverId && (
+                          <TouchableOpacity style={styles.actionBtnCrimson} onPress={() => handleCompleteTrip(item.id)} activeOpacity={0.8}>
+                            <Text style={styles.actionBtnTextLight}>{currentText.completeTripBtn}</Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    );
+                  })
+                )}
+              </View>
+            )}
+
+            {activeTab === 'bookings' && user.role === 'passenger' && (
+              <View style={styles.content}>
+                <Text style={styles.formTitle}>My Bookings & Radar</Text>
+                {bookings.length === 0 ? (
+                  <Text style={styles.emptyText}>{currentText.noBookings}</Text>
+                ) : (
+                  bookings.map((item) => (
+                    <View key={item.id.toString()} style={[styles.tripCard3D, item.status === 'confirmed' && { borderColor: '#10B981', backgroundColor: '#F0FDF4' }]}>
+                      <Text style={styles.routeText}>Route: {item.trip?.origin} ➔ {item.trip?.destination}</Text>
+                      <Text style={styles.detailText}>💺 Seats Booked: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
+                      <Text style={styles.detailText}>Status: <Text style={{fontWeight: '900', color: item.status === 'confirmed' ? '#10B981' : item.status === 'rejected' ? '#EF4444' : '#F59E0B'}}>
+                        {item.status === 'confirmed' ? currentText.confirmedStatus : item.status === 'rejected' ? currentText.rejectedStatus : currentText.pendingStatus}
+                      </Text></Text>
+
+                      {item.pickupLat && item.pickupLng && (
+                        <LiveMap latitude={item.pickupLat} longitude={item.pickupLng} title="Your Shared Pickup Point" />
+                      )}
+
+                      {item.status === 'confirmed' && item.trip && (
+                        <View style={styles.buttonActionGroup}>
+                          <TouchableOpacity style={styles.actionBtnEmerald} onPress={() => handleCallDriver(item.trip!.driver.phoneNumber)} activeOpacity={0.8}>
+                            <Text style={styles.actionBtnTextLight}>{currentText.callDriverBtn}</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity style={styles.actionBtnIndigo} onPress={() => handleSendLocation(item.id)} activeOpacity={0.8}>
+                            <Text style={styles.actionBtnTextLight}>{currentText.sendLocationBtn}</Text>
                           </TouchableOpacity>
                         </View>
                       )}
-
-                      {user.role === 'driver' && user.id === item.driverId && (
-                        <TouchableOpacity style={styles.actionBtnCrimson} onPress={() => handleCompleteTrip(item.id)} activeOpacity={0.8}>
-                          <Text style={styles.actionBtnTextLight}>{currentText.completeTripBtn}</Text>
-                        </TouchableOpacity>
-                      )}
                     </View>
-                  );
-                })
-              )}
-            </View>
-          )}
-
-          {activeTab === 'bookings' && user.role === 'passenger' && (
-            <View style={styles.content}>
-              <Text style={styles.formTitle}>My Bookings & Radar</Text>
-              {bookings.length === 0 ? (
-                <Text style={styles.emptyText}>{currentText.noBookings}</Text>
-              ) : (
-                bookings.map((item) => (
-                  <View key={item.id.toString()} style={[styles.tripCard3D, item.status === 'confirmed' && { borderColor: '#10B981', backgroundColor: '#F0FDF4' }]}>
-                    <Text style={styles.routeText}>Route: {item.trip?.origin} ➔ {item.trip?.destination}</Text>
-                    <Text style={styles.detailText}>💺 Seats Booked: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
-                    <Text style={styles.detailText}>Status: <Text style={{fontWeight: '900', color: item.status === 'confirmed' ? '#10B981' : item.status === 'rejected' ? '#EF4444' : '#F59E0B'}}>
-                      {item.status === 'confirmed' ? currentText.confirmedStatus : item.status === 'rejected' ? currentText.rejectedStatus : currentText.pendingStatus}
-                    </Text></Text>
-
-                    {item.pickupLat && item.pickupLng && (
-                      <LiveMap latitude={item.pickupLat} longitude={item.pickupLng} title="Your Shared Pickup Point" />
-                    )}
-
-                    {item.status === 'confirmed' && item.trip && (
-                      <View style={styles.buttonActionGroup}>
-                        <TouchableOpacity style={styles.actionBtnEmerald} onPress={() => handleCallDriver(item.trip!.driver.phoneNumber)} activeOpacity={0.8}>
-                          <Text style={styles.actionBtnTextLight}>{currentText.callDriverBtn}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.actionBtnIndigo} onPress={() => handleSendLocation(item.id)} activeOpacity={0.8}>
-                          <Text style={styles.actionBtnTextLight}>{currentText.sendLocationBtn}</Text>
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                  </View>
-                ))
-              )}
-            </View>
-          )}
-
-          {activeTab === 'requests' && user.role === 'driver' && (
-            <View style={styles.content}>
-              <Text style={styles.formTitle}>Incoming Passenger Radar</Text>
-              {bookings.length === 0 ? (
-                <Text style={styles.emptyText}>{currentText.noBookings}</Text>
-              ) : (
-                bookings.map((item) => (
-                  <View key={item.id.toString()} style={styles.tripCard3D}>
-                    <Text style={styles.routeText}>Route: {item.tripOrigin} ➔ {item.tripDestination}</Text>
-                    <Text style={styles.detailText}>👤 Booker: {item.passenger?.fullName} | 📞 {item.passenger?.phoneNumber}</Text>
-                    <Text style={styles.detailText}>💺 Seats Requested: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
-                    <Text style={styles.detailText}>Status: <Text style={{fontWeight: '900', color: item.status === 'confirmed' ? '#10B981' : '#EF4444'}}>{item.status.toUpperCase()}</Text></Text>
-
-                    {item.pickupLat && item.pickupLng && (
-                      <>
-                        <LiveMap latitude={item.pickupLat} longitude={item.pickupLng} title={`${item.passenger?.fullName}'s Location`} />
-                        <TouchableOpacity style={styles.actionBtnAmber} onPress={() => handleOpenMap(item.pickupLat!, item.pickupLng!)} activeOpacity={0.8}>
-                          <Text style={styles.actionBtnTextLight}>{currentText.viewMapBtn}</Text>
-                        </TouchableOpacity>
-                      </>
-                    )}
-
-                    {item.status === 'pending' && (
-                      <View style={styles.buttonActionGroup}>
-                        <TouchableOpacity style={styles.actionBtnEmerald} onPress={() => handleUpdateBookingStatus(item.id, 'confirmed')} activeOpacity={0.8}>
-                          <Text style={styles.actionBtnTextLight}>{currentText.acceptBtn}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.actionBtnCrimson} onPress={() => handleUpdateBookingStatus(item.id, 'rejected')} activeOpacity={0.8}>
-                          <Text style={styles.actionBtnTextLight}>{currentText.rejectBtn}</Text>
-                        </TouchableOpacity>
-                      </View>
-                    )}
-                  </View>
-                ))
-              )}
-            </View>
-          )}
-
-          {activeTab === 'post' && user.role === 'driver' && (
-            <View style={styles.formContainer}>
-              <Text style={styles.formTitle}>{currentText.publishTitle}</Text>
-              
-              <Text style={styles.label}>{currentText.originPlaceholder}</Text>
-              <TextInput style={styles.input3D} placeholder="Megenagna, Addis Ababa" placeholderTextColor="#94A3B8" value={origin} onChangeText={setOrigin} />
-              
-              <Text style={styles.label}>{currentText.destPlaceholder}</Text>
-              <TextInput style={styles.input3D} placeholder="Adama" placeholderTextColor="#94A3B8" value={destination} onChangeText={setDestination} />
-              
-              <Text style={styles.label}>{currentText.timeLabel}</Text>
-              <TextInput style={styles.input3D} placeholder="2026-08-25 14:30" placeholderTextColor="#94A3B8" value={departureTime} onChangeText={setDepartureTime} />
-
-              <Text style={styles.label}>{currentText.seatsPlaceholder}</Text>
-              <TextInput style={styles.input3D} placeholder="3" placeholderTextColor="#94A3B8" keyboardType="numeric" value={availableSeats} onChangeText={setAvailableSeats} />
-
-              <View style={styles.fareCalculatorBox}>
-                <Text style={styles.fareCalculatorHeader}>💡 Smart Fare Estimator</Text>
-                <Text style={styles.label}>Rate per KM (ETB)</Text>
-                <TextInput 
-                  style={[styles.input3D, { marginBottom: 8 }]} 
-                  placeholder="15" 
-                  placeholderTextColor="#94A3B8" 
-                  keyboardType="numeric" 
-                  value={ratePerKm} 
-                  onChangeText={setRatePerKm} 
-                />
-
-                {origin.trim() !== '' && destination.trim() !== '' && (
-                  <View style={styles.farePreviewRow}>
-                    <Text style={styles.farePreviewText}>
-                      Est. Distance: <Text style={{fontWeight: '900', color: '#0F172A'}}>{estimateRouteDistance(origin, destination)} km</Text>
-                    </Text>
-                    <TouchableOpacity 
-                      style={styles.autoFillBtn}
-                      onPress={() => {
-                        const suggested = calculateSuggestedFare(origin, destination, Number(ratePerKm || 15));
-                        setPricePerSeat(suggested.toString());
-                        showAlertBanner(`✨ Auto-calculated fare set to ${suggested} ETB!`);
-                      }}
-                      activeOpacity={0.8}
-                    >
-                      <Text style={styles.autoFillBtnText}>Auto-Fill Fare</Text>
-                    </TouchableOpacity>
-                  </View>
+                  ))
                 )}
               </View>
-              
-              <Text style={styles.label}>{currentText.pricePlaceholder}</Text>
-              <TextInput style={styles.input3D} placeholder="350" placeholderTextColor="#94A3B8" keyboardType="numeric" value={pricePerSeat} onChangeText={setPricePerSeat} />
+            )}
 
-              <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handlePostTrip} activeOpacity={0.8}>
-                <Text style={styles.glowPrimaryBtnText}>{currentText.publishBtn}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </ScrollView>
-      )}
+            {activeTab === 'requests' && user.role === 'driver' && (
+              <View style={styles.content}>
+                <Text style={styles.formTitle}>Incoming Passenger Radar</Text>
+                {bookings.length === 0 ? (
+                  <Text style={styles.emptyText}>{currentText.noBookings}</Text>
+                ) : (
+                  bookings.map((item) => (
+                    <View key={item.id.toString()} style={styles.tripCard3D}>
+                      <Text style={styles.routeText}>Route: {item.tripOrigin} ➔ {item.tripDestination}</Text>
+                      <Text style={styles.detailText}>👤 Booker: {item.passenger?.fullName} | 📞 {item.passenger?.phoneNumber}</Text>
+                      <Text style={styles.detailText}>💺 Seats Requested: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
+                      <Text style={styles.detailText}>Status: <Text style={{fontWeight: '900', color: item.status === 'confirmed' ? '#10B981' : '#EF4444'}}>{item.status.toUpperCase()}</Text></Text>
+
+                      {item.pickupLat && item.pickupLng && (
+                        <>
+                          <LiveMap latitude={item.pickupLat} longitude={item.pickupLng} title={`${item.passenger?.fullName}'s Location`} />
+                          <TouchableOpacity style={styles.actionBtnAmber} onPress={() => handleOpenMap(item.pickupLat!, item.pickupLng!)} activeOpacity={0.8}>
+                            <Text style={styles.actionBtnTextLight}>{currentText.viewMapBtn}</Text>
+                          </TouchableOpacity>
+                        </>
+                      )}
+
+                      {item.status === 'pending' && (
+                        <View style={styles.buttonActionGroup}>
+                          <TouchableOpacity style={styles.actionBtnEmerald} onPress={() => handleUpdateBookingStatus(item.id, 'confirmed')} activeOpacity={0.8}>
+                            <Text style={styles.actionBtnTextLight}>{currentText.acceptBtn}</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity style={styles.actionBtnCrimson} onPress={() => handleUpdateBookingStatus(item.id, 'rejected')} activeOpacity={0.8}>
+                            <Text style={styles.actionBtnTextLight}>{currentText.rejectBtn}</Text>
+                          </TouchableOpacity>
+                        </View>
+                      )}
+                    </View>
+                  ))
+                )}
+              </View>
+            )}
+
+            {activeTab === 'post' && user.role === 'driver' && (
+              <View style={styles.formContainer}>
+                <Text style={styles.formTitle}>{currentText.publishTitle}</Text>
+                
+                <Text style={styles.label}>{currentText.originPlaceholder}</Text>
+                <TextInput style={styles.input3D} placeholder="Megenagna, Addis Ababa" placeholderTextColor="#94A3B8" value={origin} onChangeText={setOrigin} />
+                
+                <Text style={styles.label}>{currentText.destPlaceholder}</Text>
+                <TextInput style={styles.input3D} placeholder="Adama" placeholderTextColor="#94A3B8" value={destination} onChangeText={setDestination} />
+                
+                <Text style={styles.label}>{currentText.timeLabel}</Text>
+                <TextInput style={styles.input3D} placeholder="2026-08-25 14:30" placeholderTextColor="#94A3B8" value={departureTime} onChangeText={setDepartureTime} />
+
+                <Text style={styles.label}>{currentText.seatsPlaceholder}</Text>
+                <TextInput style={styles.input3D} placeholder="3" placeholderTextColor="#94A3B8" keyboardType="numeric" value={availableSeats} onChangeText={setAvailableSeats} />
+
+                <View style={styles.fareCalculatorBox}>
+                  <Text style={styles.fareCalculatorHeader}>💡 Smart Fare Estimator</Text>
+                  <Text style={styles.label}>Rate per KM (ETB)</Text>
+                  <TextInput 
+                    style={[styles.input3D, { marginBottom: 8 }]} 
+                    placeholder="15" 
+                    placeholderTextColor="#94A3B8" 
+                    keyboardType="numeric" 
+                    value={ratePerKm} 
+                    onChangeText={setRatePerKm} 
+                  />
+
+                  {origin.trim() !== '' && destination.trim() !== '' && (
+                    <View style={styles.farePreviewRow}>
+                      <Text style={styles.farePreviewText}>
+                        Est. Distance: <Text style={{fontWeight: '900', color: '#0F172A'}}>{estimateRouteDistance(origin, destination)} km</Text>
+                      </Text>
+                      <TouchableOpacity 
+                        style={styles.autoFillBtn}
+                        onPress={() => {
+                          const suggested = calculateSuggestedFare(origin, destination, Number(ratePerKm || 15));
+                          setPricePerSeat(suggested.toString());
+                          showAlertBanner(`✨ Auto-calculated fare set to ${suggested} ETB!`);
+                        }}
+                        activeOpacity={0.8}
+                      >
+                        <Text style={styles.autoFillBtnText}>Auto-Fill Fare</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+                
+                <Text style={styles.label}>{currentText.pricePlaceholder}</Text>
+                <TextInput style={styles.input3D} placeholder="350" placeholderTextColor="#94A3B8" keyboardType="numeric" value={pricePerSeat} onChangeText={setPricePerSeat} />
+
+                <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handlePostTrip} activeOpacity={0.8}>
+                  <Text style={styles.glowPrimaryBtnText}>{currentText.publishBtn}</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    backgroundColor: '#F8FAFC',
-    width: '100%',
-    height: '100%',
+    backgroundColor: '#0F172A', // Fills the status bar zone natively
   },
   header: { 
     paddingHorizontal: 16,
@@ -1705,9 +1706,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#1E293B',
     paddingTop: Platform.OS === 'android' ? 12 : 14
   },
-  headerRight: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  headerRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   headerTitle: { fontSize: 18, fontWeight: '900', color: '#FFFFFF', letterSpacing: -0.3 },
-  headerSubtitle: { fontSize: 10, color: '#10B981', fontWeight: '900', marginTop: 2, letterSpacing: 1 },
+  headerSubtitle: { fontSize: 11, color: '#10B981', fontWeight: '900', marginTop: 2, letterSpacing: 1 },
   langToggle: {
     backgroundColor: '#1E293B',
     paddingHorizontal: 12,
@@ -1716,14 +1717,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#334155'
   },
-  langText: { fontSize: 12, fontWeight: '800', color: '#FFFFFF' },
+  langText: { fontSize: 13, fontWeight: '800', color: '#FFFFFF' },
   logoutBtn: {
     backgroundColor: '#EF4444',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12
   },
-  logoutText: { fontSize: 12, fontWeight: '800', color: '#FFFFFF' },
+  logoutText: { fontSize: 13, fontWeight: '800', color: '#FFFFFF' },
   banner: { 
     backgroundColor: '#ECFDF5', 
     padding: 12, 
@@ -1733,12 +1734,15 @@ const styles = StyleSheet.create({
     borderWidth: 1, 
     borderColor: '#A7F3D0' 
   },
-  bannerText: { color: '#065F46', fontWeight: '800', fontSize: 13, textAlign: 'center' },
+  bannerText: { color: '#065F46', fontWeight: '800', fontSize: 14, textAlign: 'center' },
   
-  welcomeContainer: { 
-    padding: 16, 
-    paddingBottom: 40,
-    backgroundColor: '#F8FAFC' 
+  scrollContainer: { 
+    flexGrow: 1,
+    backgroundColor: '#F8FAFC',
+    paddingBottom: 60
+  },
+  welcomeWrapper: {
+    padding: 16
   },
   heroCard3D: {
     width: '100%',
@@ -1849,35 +1853,35 @@ const styles = StyleSheet.create({
     marginBottom: 24 
   },
 
-  authContainer: { padding: 20, justifyContent: 'center', flexGrow: 1, backgroundColor: '#F8FAFC' },
+  authContainer: { padding: 20, flexGrow: 1, backgroundColor: '#F8FAFC' },
   backLink: { marginBottom: 12 },
   backLinkText: { fontSize: 14, fontWeight: '800', color: '#10B981' },
-  label: { fontSize: 12, fontWeight: '900', color: '#334155', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.8 },
-  input3D: { backgroundColor: '#FFFFFF', color: '#0F172A', padding: 14, borderRadius: 12, marginBottom: 14, fontSize: 15, borderWidth: 1, borderColor: '#CBD5E1', fontWeight: '700' },
+  label: { fontSize: 13, fontWeight: '900', color: '#334155', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.8 },
+  input3D: { backgroundColor: '#FFFFFF', color: '#0F172A', padding: 14, borderRadius: 12, marginBottom: 14, fontSize: 16, borderWidth: 1, borderColor: '#CBD5E1', fontWeight: '700' },
   roleRow: { flexDirection: 'row', gap: 12, marginBottom: 20 },
   roleCard3D: { flex: 1, padding: 14, borderRadius: 12, borderWidth: 1, borderColor: '#CBD5E1', alignItems: 'center', backgroundColor: '#FFFFFF' },
   selectedRoleCard3D: { backgroundColor: '#ECFDF5', borderColor: '#10B981' },
   roleText: { fontSize: 14, fontWeight: '800', color: '#64748B' },
   selectedRoleText3D: { color: '#10B981' },
   glowPrimaryBtn: { backgroundColor: '#10B981', paddingVertical: 16, paddingHorizontal: 20, borderRadius: 14, alignItems: 'center', elevation: 6 },
-  glowPrimaryBtnText: { color: '#FFFFFF', fontSize: 15, fontWeight: '900', letterSpacing: 0.5 },
+  glowPrimaryBtnText: { color: '#FFFFFF', fontSize: 16, fontWeight: '900', letterSpacing: 0.5 },
   glossSecondaryBtn: { backgroundColor: '#FFFFFF', paddingVertical: 16, paddingHorizontal: 20, borderRadius: 14, alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1', elevation: 2 },
-  glossSecondaryBtnText: { color: '#0F172A', fontSize: 15, fontWeight: '900', letterSpacing: 0.5 },
+  glossSecondaryBtnText: { color: '#0F172A', fontSize: 16, fontWeight: '900', letterSpacing: 0.5 },
   glowPrimaryBtnSmall: { flex: 2, backgroundColor: '#10B981', paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
-  glowPrimaryBtnTextSmall: { color: '#FFFFFF', fontSize: 13, fontWeight: '800' },
+  glowPrimaryBtnTextSmall: { color: '#FFFFFF', fontSize: 14, fontWeight: '800' },
   glossSecondaryBtnSmall: { flex: 1, backgroundColor: '#F1F5F9', paddingVertical: 12, borderRadius: 10, alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1' },
-  glossSecondaryBtnTextSmall: { color: '#0F172A', fontSize: 13, fontWeight: '800' },
+  glossSecondaryBtnTextSmall: { color: '#0F172A', fontSize: 14, fontWeight: '800' },
   
-  dashboardScrollContainer: { paddingBottom: 50 },
+  dashboardBody: { width: '100%' },
   tabContainer3D: { flexDirection: 'row', backgroundColor: '#E2E8F0', padding: 6, margin: 12, borderRadius: 14 },
   tab3D: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 10 },
   activeTab3D: { backgroundColor: '#0F172A', elevation: 3 },
-  tabText3D: { color: '#475569', fontWeight: '800', fontSize: 13 },
+  tabText3D: { color: '#475569', fontWeight: '800', fontSize: 14 },
   activeTabText3D: { color: '#FFFFFF' },
   notificationDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981' },
-  content: { flex: 1, paddingHorizontal: 12 },
+  content: { paddingHorizontal: 12 },
   searchCard3D: { backgroundColor: '#FFFFFF', padding: 14, borderRadius: 16, marginBottom: 14, borderWidth: 1, borderColor: '#E2E8F0' },
-  searchHeader: { fontSize: 13, fontWeight: '900', color: '#0F172A', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 0.8 },
+  searchHeader: { fontSize: 14, fontWeight: '900', color: '#0F172A', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 0.8 },
   searchButtonRow: { flexDirection: 'row', gap: 8 },
   
   tripCard3D: { 
@@ -1891,9 +1895,9 @@ const styles = StyleSheet.create({
     borderLeftColor: '#10B981' 
   },
   routeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
-  routeText: { fontSize: 15, fontWeight: '900', color: '#0F172A', letterSpacing: -0.2 },
+  routeText: { fontSize: 16, fontWeight: '900', color: '#0F172A', letterSpacing: -0.2 },
   priceBadge: { 
-    fontSize: 13, 
+    fontSize: 14, 
     fontWeight: '900', 
     color: '#FFFFFF', 
     backgroundColor: '#10B981', 
@@ -1902,32 +1906,32 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden'
   },
-  detailText: { color: '#475569', fontSize: 13, marginBottom: 5, fontWeight: '700' },
-  driverText: { color: '#10B981', fontSize: 13, marginTop: 6, fontWeight: '800' },
+  detailText: { color: '#475569', fontSize: 14, marginBottom: 5, fontWeight: '700' },
+  driverText: { color: '#10B981', fontSize: 14, marginTop: 6, fontWeight: '800' },
   
   seatSelectorContainer: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
-  seatSelectorLabel: { fontSize: 12, fontWeight: '900', color: '#64748B', marginBottom: 8, textTransform: 'uppercase' },
+  seatSelectorLabel: { fontSize: 13, fontWeight: '900', color: '#64748B', marginBottom: 8, textTransform: 'uppercase' },
   seatCounterRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#F8FAFC', padding: 8, borderRadius: 10, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 10 },
-  seatControlBtn: { width: 32, height: 32, borderRadius: 8, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1' },
-  seatControlText: { fontSize: 16, fontWeight: '900', color: '#0F172A' },
+  seatControlBtn: { width: 34, height: 34, borderRadius: 8, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1' },
+  seatControlText: { fontSize: 18, fontWeight: '900', color: '#0F172A' },
   seatCountText: { fontSize: 16, fontWeight: '900', color: '#0F172A' },
   
   fareCalculatorBox: { backgroundColor: '#F8FAFC', padding: 14, borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 14 },
-  fareCalculatorHeader: { fontSize: 13, fontWeight: '900', color: '#10B981', marginBottom: 10, textTransform: 'uppercase' },
+  fareCalculatorHeader: { fontSize: 14, fontWeight: '900', color: '#10B981', marginBottom: 10, textTransform: 'uppercase' },
   farePreviewRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6 },
-  farePreviewText: { fontSize: 13, color: '#475569', fontWeight: '700' },
+  farePreviewText: { fontSize: 14, color: '#475569', fontWeight: '700' },
   autoFillBtn: { backgroundColor: '#10B981', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8 },
-  autoFillBtnText: { color: '#FFFFFF', fontSize: 12, fontWeight: '900' },
+  autoFillBtnText: { color: '#FFFFFF', fontSize: 13, fontWeight: '900' },
 
   buttonActionGroup: { flexDirection: 'row', gap: 8, marginTop: 10 },
   actionBtnGlowDark: { backgroundColor: '#0F172A', marginTop: 10, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
-  actionBtnTextDark: { color: '#FFFFFF', fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
+  actionBtnTextDark: { color: '#FFFFFF', fontSize: 14, fontWeight: '900', letterSpacing: 0.5 },
   actionBtnEmerald: { flex: 1, backgroundColor: '#10B981', paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
   actionBtnIndigo: { flex: 1, backgroundColor: '#4F46E5', paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
   actionBtnCrimson: { flex: 1, backgroundColor: '#EF4444', paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
   actionBtnAmber: { backgroundColor: '#F59E0B', marginTop: 10, paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
-  actionBtnTextLight: { color: '#FFFFFF', fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
-  emptyText: { color: '#94A3B8', textAlign: 'center', marginTop: 30, fontSize: 14, fontWeight: '800' },
+  actionBtnTextLight: { color: '#FFFFFF', fontSize: 14, fontWeight: '900', letterSpacing: 0.5 },
+  emptyText: { color: '#94A3B8', textAlign: 'center', marginTop: 30, fontSize: 15, fontWeight: '800' },
   formContainer: { padding: 16 },
-  formTitle: { fontSize: 16, fontWeight: '900', color: '#0F172A', marginBottom: 12 },
+  formTitle: { fontSize: 18, fontWeight: '900', color: '#0F172A', marginBottom: 12 },
 });

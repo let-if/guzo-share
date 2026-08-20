@@ -920,12 +920,11 @@
 //   formTitle: { fontSize: 14, fontWeight: '900', color: '#0F172A', marginBottom: 10 },
 // });
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Alert, SafeAreaView, Platform, Linking } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Alert, SafeAreaView, Platform, Linking, StatusBar } from 'react-native';
 import axios from 'axios';
 import LiveMap from '../components/LiveMap';
 import { estimateRouteDistance, calculateSuggestedFare } from '../utils/fareCalculator';
 
-// const API_URL = 'http://localhost:5000/api';
 const API_URL = 'https://guzo-share.onrender.com/api';
 
 interface User {
@@ -1318,11 +1317,12 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#0F172A" barStyle="light-content" />
       {/* Top Navigation Bar */}
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>ጉዞ-ሼር <Text style={{color: '#10B981'}}>Guzo</Text></Text>
-          <Text style={styles.headerSubtitle}>PREMIER ETHIOPIAN TRANSIT NETWORK</Text>
+          <Text style={styles.headerSubtitle}>PREMIER ETHIOPIAN TRANSIT</Text>
         </View>
         <View style={styles.headerRight}>
           <TouchableOpacity style={styles.langToggle} onPress={() => setLang(lang === 'en' ? 'am' : 'en')} activeOpacity={0.7}>
@@ -1342,10 +1342,9 @@ export default function HomeScreen() {
         </View>
       )}
 
-      {/* Landing Page with 3D Dashboard Highlights */}
+      {/* Landing Page */}
       {!user && authView === 'welcome' && (
         <ScrollView contentContainerStyle={styles.welcomeContainer} showsVerticalScrollIndicator={false}>
-          {/* Main Hero Card */}
           <View style={styles.heroCard3D}>
             <View style={styles.heroGlowOverlay} />
             <View style={styles.heroBadgeRow}>
@@ -1361,7 +1360,6 @@ export default function HomeScreen() {
             <Text style={styles.authTitle}>{currentText.welcomeTitle}</Text>
             <Text style={styles.authSubtitle}>{currentText.welcomeSubtitle}</Text>
 
-            {/* Quick Metrics Strip */}
             <View style={styles.metricStrip3D}>
               <View style={styles.metricItem}>
                 <Text style={styles.metricVal}>100%</Text>
@@ -1380,7 +1378,6 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Action Button Group */}
           <View style={styles.welcomeButtonGroup}>
             <TouchableOpacity style={styles.glowPrimaryBtn} onPress={() => setAuthView('signup')} activeOpacity={0.85}>
               <Text style={styles.glowPrimaryBtnText}>⚡ {currentText.signUpNavBtn}</Text>
@@ -1388,65 +1385,6 @@ export default function HomeScreen() {
             <TouchableOpacity style={styles.glossSecondaryBtn} onPress={() => setAuthView('signin')} activeOpacity={0.85}>
               <Text style={styles.glossSecondaryBtnText}>{currentText.signInNavBtn}</Text>
             </TouchableOpacity>
-          </View>
-
-          {/* Dashboard Highlight Features */}
-          <View style={styles.sectionHeaderWrap}>
-            <Text style={styles.sectionHeaderTag}>SMART PLATFORM HIGHLIGHTS</Text>
-            <Text style={styles.sectionHeaderTitle}>Why Commuters Choose Guzo-Share</Text>
-          </View>
-
-          <View style={styles.featureGrid}>
-            <View style={styles.featureCard3D}>
-              <View style={styles.featureIconWrap}>
-                <Text style={styles.featureEmoji}>🛰️</Text>
-              </View>
-              <Text style={styles.featureTitle}>Real-Time GPS Radar</Text>
-              <Text style={styles.featureDesc}>
-                Passengers transmit live pickup coordinates directly to the driver's route view for seamless rendezvous.
-              </Text>
-            </View>
-
-            <View style={styles.featureCard3D}>
-              <View style={styles.featureIconWrap}>
-                <Text style={styles.featureEmoji}>💰</Text>
-              </View>
-              <Text style={styles.featureTitle}>Automated Fare Calculation</Text>
-              <Text style={styles.featureDesc}>
-                Built-in distance estimator ensures fair, predictable ETB pricing per seat according to distance traveled.
-              </Text>
-            </View>
-
-            <View style={styles.featureCard3D}>
-              <View style={styles.featureIconWrap}>
-                <Text style={styles.featureEmoji}>🛡️</Text>
-              </View>
-              <Text style={styles.featureTitle}>Peer Verification</Text>
-              <Text style={styles.featureDesc}>
-                Direct telephone and passenger dispatch confirmation prevents unverified bookings and ghost trips.
-              </Text>
-            </View>
-
-            <View style={styles.featureCard3D}>
-              <View style={styles.featureIconWrap}>
-                <Text style={styles.featureEmoji}>🇪🇹</Text>
-              </View>
-              <Text style={styles.featureTitle}>Nationwide Route Coverage</Text>
-              <Text style={styles.featureDesc}>
-                Frequent daily routes connecting Addis Ababa, Bishoftu, Adama, Hawassa, Bahir Dar, and beyond.
-              </Text>
-            </View>
-          </View>
-
-          {/* Popular Corridors Callout */}
-          <View style={styles.corridorCard3D}>
-            <Text style={styles.corridorTitle}>🔥 Popular Corridors</Text>
-            <View style={styles.corridorPillRow}>
-              <View style={styles.corridorPill}><Text style={styles.corridorPillText}>Addis ➔ Adama</Text></View>
-              <View style={styles.corridorPill}><Text style={styles.corridorPillText}>Addis ➔ Hawassa</Text></View>
-              <View style={styles.corridorPill}><Text style={styles.corridorPillText}>Bole ➔ Megenagna</Text></View>
-              <View style={styles.corridorPill}><Text style={styles.corridorPillText}>Addis ➔ Debre Zeit</Text></View>
-            </View>
           </View>
         </ScrollView>
       )}
@@ -1766,37 +1704,38 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', 
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#1E293B'
+    borderBottomColor: '#1E293B',
+    paddingTop: Platform.OS === 'android' ? 12 : 14
   },
-  headerRight: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  headerTitle: { fontSize: 16, fontWeight: '900', color: '#FFFFFF', letterSpacing: -0.3 },
-  headerSubtitle: { fontSize: 7, color: '#10B981', fontWeight: '900', marginTop: 1, letterSpacing: 1.2 },
+  headerRight: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  headerTitle: { fontSize: 18, fontWeight: '900', color: '#FFFFFF', letterSpacing: -0.3 },
+  headerSubtitle: { fontSize: 10, color: '#10B981', fontWeight: '900', marginTop: 2, letterSpacing: 1 },
   langToggle: {
     backgroundColor: '#1E293B',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#334155'
   },
-  langText: { fontSize: 10, fontWeight: '800', color: '#FFFFFF' },
+  langText: { fontSize: 12, fontWeight: '800', color: '#FFFFFF' },
   logoutBtn: {
     backgroundColor: '#EF4444',
-    paddingHorizontal: 9,
-    paddingVertical: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 12
   },
-  logoutText: { fontSize: 10, fontWeight: '800', color: '#FFFFFF' },
+  logoutText: { fontSize: 12, fontWeight: '800', color: '#FFFFFF' },
   banner: { 
     backgroundColor: '#ECFDF5', 
-    padding: 10, 
+    padding: 12, 
     marginHorizontal: 14, 
     marginTop: 10, 
     borderRadius: 12, 
     borderWidth: 1, 
     borderColor: '#A7F3D0' 
   },
-  bannerText: { color: '#065F46', fontWeight: '800', fontSize: 11, textAlign: 'center' },
+  bannerText: { color: '#065F46', fontWeight: '800', fontSize: 13, textAlign: 'center' },
   
   welcomeContainer: { 
     padding: 16, 
@@ -1810,17 +1749,14 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    ...(Platform.OS === 'web' ? {
-      boxShadow: '0 20px 40px -15px rgba(16, 185, 129, 0.12)'
-    } : {})
-  } as any,
+    borderColor: '#E2E8F0'
+  },
   heroGlowOverlay: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    height: 5,
+    height: 6,
     backgroundColor: '#10B981',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24
@@ -1860,22 +1796,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#10B981'
   },
   livePulseText: {
-    fontSize: 9,
+    fontSize: 11,
     fontWeight: '900',
     color: '#065F46',
     letterSpacing: 0.8
   },
   authTitle: { 
-    fontSize: 22, 
+    fontSize: 24, 
     fontWeight: '900', 
     color: '#0F172A', 
     marginBottom: 6, 
     letterSpacing: -0.5 
   },
   authSubtitle: { 
-    fontSize: 12, 
+    fontSize: 14, 
     color: '#64748B', 
-    lineHeight: 18, 
+    lineHeight: 20, 
     fontWeight: '600',
     marginBottom: 16
   },
@@ -1893,12 +1829,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   metricVal: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '900',
     color: '#10B981'
   },
   metricLbl: {
-    fontSize: 9,
+    fontSize: 11,
     fontWeight: '800',
     color: '#64748B',
     marginTop: 2,
@@ -1906,194 +1842,92 @@ const styles = StyleSheet.create({
   },
   metricDivider: {
     width: 1,
-    height: 24,
+    height: 28,
     backgroundColor: '#E2E8F0'
   },
   welcomeButtonGroup: { 
     width: '100%', 
-    gap: 10, 
+    gap: 12, 
     marginBottom: 24 
-  },
-  
-  sectionHeaderWrap: {
-    marginBottom: 14,
-    marginTop: 6
-  },
-  sectionHeaderTag: {
-    fontSize: 10,
-    fontWeight: '900',
-    color: '#10B981',
-    letterSpacing: 1.2,
-    marginBottom: 2
-  },
-  sectionHeaderTitle: {
-    fontSize: 16,
-    fontWeight: '900',
-    color: '#0F172A',
-    letterSpacing: -0.3
-  },
-  featureGrid: {
-    gap: 12,
-    marginBottom: 20
-  },
-  featureCard3D: {
-    backgroundColor: '#FFFFFF',
-    padding: 16,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    ...(Platform.OS === 'web' ? {
-      boxShadow: '0 8px 20px -8px rgba(0, 0, 0, 0.05)'
-    } : {})
-  } as any,
-  featureIconWrap: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    backgroundColor: '#F1F5F9',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10
-  },
-  featureEmoji: {
-    fontSize: 18
-  },
-  featureTitle: {
-    fontSize: 13,
-    fontWeight: '900',
-    color: '#0F172A',
-    marginBottom: 4
-  },
-  featureDesc: {
-    fontSize: 11,
-    color: '#64748B',
-    lineHeight: 16,
-    fontWeight: '500'
-  },
-
-  corridorCard3D: {
-    backgroundColor: '#0F172A',
-    padding: 16,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: '#1E293B',
-    marginBottom: 10
-  },
-  corridorTitle: {
-    fontSize: 12,
-    fontWeight: '900',
-    color: '#F8FAFC',
-    marginBottom: 10,
-    textTransform: 'uppercase',
-    letterSpacing: 0.8
-  },
-  corridorPillRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 6
-  },
-  corridorPill: {
-    backgroundColor: '#1E293B',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#334155'
-  },
-  corridorPillText: {
-    color: '#34D399',
-    fontSize: 10,
-    fontWeight: '800'
   },
 
   authContainer: { padding: 20, justifyContent: 'center', flexGrow: 1, backgroundColor: '#F8FAFC' },
   backLink: { marginBottom: 12 },
-  backLinkText: { fontSize: 12, fontWeight: '800', color: '#10B981' },
-  label: { fontSize: 10, fontWeight: '900', color: '#334155', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.8 },
-  input3D: { backgroundColor: '#FFFFFF', color: '#0F172A', padding: 12, borderRadius: 12, marginBottom: 12, fontSize: 13, borderWidth: 1, borderColor: '#CBD5E1', fontWeight: '700', ...(Platform.OS === 'web' ? { boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' } : {}) } as any,
-  roleRow: { flexDirection: 'row', gap: 10, marginBottom: 18 },
-  roleCard3D: { flex: 1, padding: 12, borderRadius: 12, borderWidth: 1, borderColor: '#CBD5E1', alignItems: 'center', backgroundColor: '#FFFFFF' },
+  backLinkText: { fontSize: 14, fontWeight: '800', color: '#10B981' },
+  label: { fontSize: 12, fontWeight: '900', color: '#334155', marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.8 },
+  input3D: { backgroundColor: '#FFFFFF', color: '#0F172A', padding: 14, borderRadius: 12, marginBottom: 14, fontSize: 15, borderWidth: 1, borderColor: '#CBD5E1', fontWeight: '700' },
+  roleRow: { flexDirection: 'row', gap: 12, marginBottom: 20 },
+  roleCard3D: { flex: 1, padding: 14, borderRadius: 12, borderWidth: 1, borderColor: '#CBD5E1', alignItems: 'center', backgroundColor: '#FFFFFF' },
   selectedRoleCard3D: { backgroundColor: '#ECFDF5', borderColor: '#10B981' },
-  roleText: { fontSize: 12, fontWeight: '800', color: '#64748B' },
+  roleText: { fontSize: 14, fontWeight: '800', color: '#64748B' },
   selectedRoleText3D: { color: '#10B981' },
-  glowPrimaryBtn: { backgroundColor: '#10B981', paddingVertical: 14, paddingHorizontal: 20, borderRadius: 14, alignItems: 'center', shadowColor: '#10B981', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.3, shadowRadius: 10, elevation: 6 },
-  glowPrimaryBtnText: { color: '#FFFFFF', fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
-  glossSecondaryBtn: { backgroundColor: '#FFFFFF', paddingVertical: 14, paddingHorizontal: 20, borderRadius: 14, alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
-  glossSecondaryBtnText: { color: '#0F172A', fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
-  glowPrimaryBtnSmall: { flex: 2, backgroundColor: '#10B981', paddingVertical: 10, borderRadius: 10, alignItems: 'center' },
-  glowPrimaryBtnTextSmall: { color: '#FFFFFF', fontSize: 12, fontWeight: '800' },
-  glossSecondaryBtnSmall: { flex: 1, backgroundColor: '#F1F5F9', paddingVertical: 10, borderRadius: 10, alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1' },
-  glossSecondaryBtnTextSmall: { color: '#0F172A', fontSize: 12, fontWeight: '800' },
-  tabContainer3D: { flexDirection: 'row', backgroundColor: '#E2E8F0', padding: 4, margin: 12, borderRadius: 14 },
-  tab3D: { flex: 1, paddingVertical: 8, alignItems: 'center', borderRadius: 10 },
-  activeTab3D: { backgroundColor: '#0F172A', shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.15, shadowRadius: 6, elevation: 3 },
-  tabText3D: { color: '#475569', fontWeight: '800', fontSize: 11 },
+  glowPrimaryBtn: { backgroundColor: '#10B981', paddingVertical: 16, paddingHorizontal: 20, borderRadius: 14, alignItems: 'center', elevation: 6 },
+  glowPrimaryBtnText: { color: '#FFFFFF', fontSize: 15, fontWeight: '900', letterSpacing: 0.5 },
+  glossSecondaryBtn: { backgroundColor: '#FFFFFF', paddingVertical: 16, paddingHorizontal: 20, borderRadius: 14, alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1', elevation: 2 },
+  glossSecondaryBtnText: { color: '#0F172A', fontSize: 15, fontWeight: '900', letterSpacing: 0.5 },
+  glowPrimaryBtnSmall: { flex: 2, backgroundColor: '#10B981', paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
+  glowPrimaryBtnTextSmall: { color: '#FFFFFF', fontSize: 13, fontWeight: '800' },
+  glossSecondaryBtnSmall: { flex: 1, backgroundColor: '#F1F5F9', paddingVertical: 12, borderRadius: 10, alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1' },
+  glossSecondaryBtnTextSmall: { color: '#0F172A', fontSize: 13, fontWeight: '800' },
+  tabContainer3D: { flexDirection: 'row', backgroundColor: '#E2E8F0', padding: 6, margin: 12, borderRadius: 14 },
+  tab3D: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 10 },
+  activeTab3D: { backgroundColor: '#0F172A', elevation: 3 },
+  tabText3D: { color: '#475569', fontWeight: '800', fontSize: 13 },
   activeTabText3D: { color: '#FFFFFF' },
-  notificationDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#10B981' },
+  notificationDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#10B981' },
   content: { flex: 1, paddingHorizontal: 12 },
-  searchCard3D: { backgroundColor: '#FFFFFF', padding: 12, borderRadius: 16, marginBottom: 12, borderWidth: 1, borderColor: '#E2E8F0', ...(Platform.OS === 'web' ? { boxShadow: '0 10px 20px -10px rgba(0,0,0,0.05)' } : {}) } as any,
-  searchHeader: { fontSize: 11, fontWeight: '900', color: '#0F172A', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.8 },
+  searchCard3D: { backgroundColor: '#FFFFFF', padding: 14, borderRadius: 16, marginBottom: 14, borderWidth: 1, borderColor: '#E2E8F0' },
+  searchHeader: { fontSize: 13, fontWeight: '900', color: '#0F172A', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 0.8 },
   searchButtonRow: { flexDirection: 'row', gap: 8 },
   
   tripCard3D: { 
     backgroundColor: '#FFFFFF', 
-    padding: 14, 
+    padding: 16, 
     borderRadius: 18, 
-    marginBottom: 12, 
+    marginBottom: 14, 
     borderWidth: 1, 
     borderColor: '#E2E8F0', 
     borderLeftWidth: 4, 
-    borderLeftColor: '#10B981',
-    ...(Platform.OS === 'web' ? {
-      boxShadow: '0 12px 30px -10px rgba(16, 185, 129, 0.15)',
-      transition: 'all 0.25s ease-in-out',
-      cursor: 'pointer',
-      ':hover': {
-        transform: 'translateY(-3px)',
-        boxShadow: '0 18px 40px -10px rgba(16, 185, 129, 0.28)',
-        borderColor: '#34D399'
-      }
-    } : {})
-  } as any,
-
-  routeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  routeText: { fontSize: 13, fontWeight: '900', color: '#0F172A', letterSpacing: -0.2 },
+    borderLeftColor: '#10B981' 
+  },
+  routeRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  routeText: { fontSize: 15, fontWeight: '900', color: '#0F172A', letterSpacing: -0.2 },
   priceBadge: { 
-    fontSize: 12, 
+    fontSize: 13, 
     fontWeight: '900', 
     color: '#FFFFFF', 
     backgroundColor: '#10B981', 
-    paddingHorizontal: 8, 
-    paddingVertical: 3, 
+    paddingHorizontal: 10, 
+    paddingVertical: 4, 
     borderRadius: 8,
     overflow: 'hidden'
   },
-  detailText: { color: '#475569', fontSize: 11, marginBottom: 3, fontWeight: '700' },
-  driverText: { color: '#10B981', fontSize: 11, marginTop: 4, fontWeight: '800' },
+  detailText: { color: '#475569', fontSize: 13, marginBottom: 5, fontWeight: '700' },
+  driverText: { color: '#10B981', fontSize: 13, marginTop: 6, fontWeight: '800' },
   
-  seatSelectorContainer: { marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
-  seatSelectorLabel: { fontSize: 10, fontWeight: '900', color: '#64748B', marginBottom: 6, textTransform: 'uppercase' },
-  seatCounterRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#F8FAFC', padding: 6, borderRadius: 10, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 8 },
-  seatControlBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1' },
-  seatControlText: { fontSize: 14, fontWeight: '900', color: '#0F172A' },
-  seatCountText: { fontSize: 14, fontWeight: '900', color: '#0F172A' },
+  seatSelectorContainer: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#F1F5F9' },
+  seatSelectorLabel: { fontSize: 12, fontWeight: '900', color: '#64748B', marginBottom: 8, textTransform: 'uppercase' },
+  seatCounterRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#F8FAFC', padding: 8, borderRadius: 10, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 10 },
+  seatControlBtn: { width: 32, height: 32, borderRadius: 8, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1' },
+  seatControlText: { fontSize: 16, fontWeight: '900', color: '#0F172A' },
+  seatCountText: { fontSize: 16, fontWeight: '900', color: '#0F172A' },
   
-  fareCalculatorBox: { backgroundColor: '#F8FAFC', padding: 12, borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 12 },
-  fareCalculatorHeader: { fontSize: 11, fontWeight: '900', color: '#10B981', marginBottom: 8, textTransform: 'uppercase' },
-  farePreviewRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 4 },
-  farePreviewText: { fontSize: 11, color: '#475569', fontWeight: '700' },
-  autoFillBtn: { backgroundColor: '#10B981', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
-  autoFillBtnText: { color: '#FFFFFF', fontSize: 10, fontWeight: '900' },
+  fareCalculatorBox: { backgroundColor: '#F8FAFC', padding: 14, borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 14 },
+  fareCalculatorHeader: { fontSize: 13, fontWeight: '900', color: '#10B981', marginBottom: 10, textTransform: 'uppercase' },
+  farePreviewRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 6 },
+  farePreviewText: { fontSize: 13, color: '#475569', fontWeight: '700' },
+  autoFillBtn: { backgroundColor: '#10B981', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 8 },
+  autoFillBtnText: { color: '#FFFFFF', fontSize: 12, fontWeight: '900' },
 
-  buttonActionGroup: { flexDirection: 'row', gap: 6, marginTop: 8 },
-  actionBtnGlowDark: { backgroundColor: '#0F172A', marginTop: 8, paddingVertical: 10, borderRadius: 10, alignItems: 'center' },
-  actionBtnTextDark: { color: '#FFFFFF', fontSize: 11, fontWeight: '900', letterSpacing: 0.5 },
-  actionBtnEmerald: { flex: 1, backgroundColor: '#10B981', paddingVertical: 8, borderRadius: 8, alignItems: 'center' },
-  actionBtnIndigo: { flex: 1, backgroundColor: '#4F46E5', paddingVertical: 8, borderRadius: 8, alignItems: 'center' },
-  actionBtnCrimson: { flex: 1, backgroundColor: '#EF4444', paddingVertical: 8, borderRadius: 8, alignItems: 'center' },
-  actionBtnAmber: { backgroundColor: '#F59E0B', marginTop: 8, paddingVertical: 8, borderRadius: 8, alignItems: 'center' },
-  actionBtnTextLight: { color: '#FFFFFF', fontSize: 11, fontWeight: '900', letterSpacing: 0.5 },
-  emptyText: { color: '#94A3B8', textAlign: 'center', marginTop: 30, fontSize: 12, fontWeight: '800' },
-  formContainer: { padding: 14 },
-  formTitle: { fontSize: 14, fontWeight: '900', color: '#0F172A', marginBottom: 10 },
+  buttonActionGroup: { flexDirection: 'row', gap: 8, marginTop: 10 },
+  actionBtnGlowDark: { backgroundColor: '#0F172A', marginTop: 10, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
+  actionBtnTextDark: { color: '#FFFFFF', fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
+  actionBtnEmerald: { flex: 1, backgroundColor: '#10B981', paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
+  actionBtnIndigo: { flex: 1, backgroundColor: '#4F46E5', paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
+  actionBtnCrimson: { flex: 1, backgroundColor: '#EF4444', paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
+  actionBtnAmber: { backgroundColor: '#F59E0B', marginTop: 10, paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
+  actionBtnTextLight: { color: '#FFFFFF', fontSize: 13, fontWeight: '900', letterSpacing: 0.5 },
+  emptyText: { color: '#94A3B8', textAlign: 'center', marginTop: 30, fontSize: 14, fontWeight: '800' },
+  formContainer: { padding: 16 },
+  formTitle: { fontSize: 16, fontWeight: '900', color: '#0F172A', marginBottom: 12 },
 });

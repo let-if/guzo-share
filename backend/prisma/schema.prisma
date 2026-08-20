@@ -1,0 +1,109 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  fullName       String   @map("full_name")
+  phoneNumber    String   @unique @map("phone_number")
+  role           Role     @default(passenger)
+  telegramHandle String?  @map("telegram_handle")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  vehicles      Vehicle[]
+  trips         Trip[]
+  bookings      Booking[]
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model Vehicle {
+  id           Int      @id @default(autoincrement())
+  driverId     Int      @map("driver_id")
+  carModel     String   @map("car_model")
+  licensePlate String   @map("license_plate")
+  color        String?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  driver User @relation(fields: [driverId], references: [id], onDelete: Cascade)
+
+  @@map("vehicles")
+}
+
+model Trip {
+  id             Int        @id @default(autoincrement())
+  driverId       Int        @map("driver_id")
+  origin         String
+  destination    String
+  originLat      Float?     @map("origin_lat")
+  originLng      Float?     @map("origin_lng")
+  destLat        Float?     @map("dest_lat")
+  destLng        Float?     @map("dest_lng")
+  departureTime  DateTime   @map("departure_time")
+  availableSeats Int        @map("available_seats")
+  pricePerSeat   Decimal    @db.Decimal(10, 2) @map("price_per_seat")
+  status         TripStatus @default(active)
+  createdAt      DateTime   @default(now()) @map("created_at")
+
+  driver         User       @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  bookings       Booking[]
+
+  @@map("trips")
+}
+
+model Booking {
+  id               Int           @id @default(autoincrement())
+  tripId           Int           @map("trip_id")
+  passengerId      Int           @map("passenger_id")
+  seatsBooked      Int           @default(1) @map("seats_booked")
+  status           BookingStatus @default(pending)
+  
+  // New Location Fields
+  pickupLat        Float?        @map("pickup_lat")
+  pickupLng        Float?        @map("pickup_lng")
+  locationSharedAt DateTime?     @map("location_shared_at")
+
+  createdAt        DateTime      @default(now()) @map("created_at")
+
+  trip             Trip          @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  passenger        User          @relation(fields: [passengerId], references: [id], onDelete: Cascade)
+
+  @@map("bookings")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  message   String
+  type      String // 'booking_request', 'booking_accepted', 'booking_rejected'
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+enum Role {
+  driver
+  passenger
+  both
+}
+
+enum TripStatus {
+  active
+  completed
+  cancelled
+}
+
+enum BookingStatus {
+  pending // <-- ADDED
+  confirmed
+  rejected // <-- ADDED
+  cancelled
+}

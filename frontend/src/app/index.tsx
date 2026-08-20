@@ -7,6 +7,7 @@
 
 // // const API_URL = 'http://localhost:5000/api';
 // const API_URL = 'https://guzo-share.onrender.com/api';
+
 // interface User {
 //   id: number;
 //   fullName: string;
@@ -396,389 +397,358 @@
 //   const unreadCount = notifications.filter(n => !n.isRead).length;
 
 //   return (
-//     <View style={styles.browserBackground}>
-//       <View style={styles.phoneContainer}>
-//         <SafeAreaView style={styles.container}>
-          
-//           {/* Header */}
-//           <View style={styles.header}>
-//             <View>
-//               <Text style={styles.headerTitle}>ጉዞ-ሼር <Text style={{color: '#10B981'}}>Guzo</Text></Text>
-//               <Text style={styles.headerSubtitle}>PREMIER ETHIOPIAN TRANSIT NETWORK</Text>
+//     <SafeAreaView style={styles.container}>
+//       {/* Header */}
+//       <View style={styles.header}>
+//         <View>
+//           <Text style={styles.headerTitle}>ጉዞ-ሼር <Text style={{color: '#10B981'}}>Guzo</Text></Text>
+//           <Text style={styles.headerSubtitle}>PREMIER ETHIOPIAN TRANSIT NETWORK</Text>
+//         </View>
+//         <View style={styles.headerRight}>
+//           <TouchableOpacity style={styles.langToggle} onPress={() => setLang(lang === 'en' ? 'am' : 'en')} activeOpacity={0.7}>
+//             <Text style={styles.langText}>{lang === 'en' ? 'አማርኛ' : 'English'}</Text>
+//           </TouchableOpacity>
+//           {user && (
+//             <TouchableOpacity style={styles.logoutBtn} onPress={() => { setUser(null); setAuthView('welcome'); }} activeOpacity={0.7}>
+//               <Text style={styles.logoutText}>{currentText.logoutBtn}</Text>
+//             </TouchableOpacity>
+//           )}
+//         </View>
+//       </View>
+
+//       {bannerMessage && (
+//         <View style={styles.banner}>
+//           <Text style={styles.bannerText}>{bannerMessage}</Text>
+//         </View>
+//       )}
+
+//       {!user && authView === 'welcome' && (
+//         <ScrollView contentContainerStyle={styles.welcomeContainer}>
+//           <View style={styles.heroCard3D}>
+//             <View style={styles.heroGlowOverlay} />
+//             <View style={styles.heroIconCircle}>
+//               <Text style={styles.heroEmoji}>🚘⚡</Text>
 //             </View>
-//             <View style={styles.headerRight}>
-//               <TouchableOpacity style={styles.langToggle} onPress={() => setLang(lang === 'en' ? 'am' : 'en')} activeOpacity={0.7}>
-//                 <Text style={styles.langText}>{lang === 'en' ? 'አማርኛ' : 'English'}</Text>
-//               </TouchableOpacity>
-//               {user && (
-//                 <TouchableOpacity style={styles.logoutBtn} onPress={() => { setUser(null); setAuthView('welcome'); }} activeOpacity={0.7}>
-//                   <Text style={styles.logoutText}>{currentText.logoutBtn}</Text>
-//                 </TouchableOpacity>
-//               )}
-//             </View>
+//             <Text style={styles.heroTag}>VERIFIED ETHIOPIAN POOL</Text>
+//             <Text style={styles.authTitle}>{currentText.welcomeTitle}</Text>
+//             <Text style={styles.authSubtitle}>{currentText.welcomeSubtitle}</Text>
 //           </View>
 
-//           {bannerMessage && (
-//             <View style={styles.banner}>
-//               <Text style={styles.bannerText}>{bannerMessage}</Text>
-//             </View>
-//           )}
+//           <View style={styles.welcomeButtonGroup}>
+//             <TouchableOpacity style={styles.glowPrimaryBtn} onPress={() => setAuthView('signin')} activeOpacity={0.8}>
+//               <Text style={styles.glowPrimaryBtnText}>{currentText.signInNavBtn}</Text>
+//             </TouchableOpacity>
+//             <TouchableOpacity style={styles.glossSecondaryBtn} onPress={() => setAuthView('signup')} activeOpacity={0.8}>
+//               <Text style={styles.glossSecondaryBtnText}>{currentText.signUpNavBtn}</Text>
+//             </TouchableOpacity>
+//           </View>
+//         </ScrollView>
+//       )}
 
-//           {!user && authView === 'welcome' && (
-//             <ScrollView contentContainerStyle={styles.welcomeContainer}>
-//               <View style={styles.heroCard3D}>
-//                 <View style={styles.heroGlowOverlay} />
-//                 <View style={styles.heroIconCircle}>
-//                   <Text style={styles.heroEmoji}>🚘⚡</Text>
+//       {!user && authView === 'signin' && (
+//         <ScrollView contentContainerStyle={styles.authContainer}>
+//           <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
+//             <Text style={styles.backLinkText}>{currentText.backBtn}</Text>
+//           </TouchableOpacity>
+//           <Text style={styles.authTitle}>{currentText.signInTitle}</Text>
+//           <Text style={styles.authSubtitle}>{currentText.signInSubtitle}</Text>
+
+//           <Text style={styles.label}>{currentText.phoneLabel}</Text>
+//           <TextInput style={styles.input3D} placeholder="0911223344" placeholderTextColor="#94A3B8" keyboardType="phone-pad" value={phoneInput} onChangeText={setPhoneInput} />
+
+//           <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handleSignIn} activeOpacity={0.8}>
+//             <Text style={styles.glowPrimaryBtnText}>{currentText.signInBtn}</Text>
+//           </TouchableOpacity>
+//         </ScrollView>
+//       )}
+
+//       {!user && authView === 'signup' && (
+//         <ScrollView contentContainerStyle={styles.authContainer}>
+//           <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
+//             <Text style={styles.backLinkText}>{currentText.backBtn}</Text>
+//           </TouchableOpacity>
+//           <Text style={styles.authTitle}>{currentText.signUpTitle}</Text>
+//           <Text style={styles.authSubtitle}>{currentText.signUpSubtitle}</Text>
+
+//           <Text style={styles.label}>{currentText.nameLabel}</Text>
+//           <TextInput style={styles.input3D} placeholder="Abebe Kebede" placeholderTextColor="#94A3B8" value={fullNameInput} onChangeText={setFullNameInput} />
+
+//           <Text style={styles.label}>{currentText.phoneLabel}</Text>
+//           <TextInput style={styles.input3D} placeholder="0911223344" placeholderTextColor="#94A3B8" keyboardType="phone-pad" value={phoneInput} onChangeText={setPhoneInput} />
+
+//           <Text style={styles.label}>{currentText.roleLabel}</Text>
+//           <View style={styles.roleRow}>
+//             <TouchableOpacity style={[styles.roleCard3D, selectedRole === 'passenger' && styles.selectedRoleCard3D]} onPress={() => setSelectedRole('passenger')} activeOpacity={0.8}>
+//               <Text style={[styles.roleText, selectedRole === 'passenger' && styles.selectedRoleText3D]}>{currentText.passengerRole}</Text>
+//             </TouchableOpacity>
+//             <TouchableOpacity style={[styles.roleCard3D, selectedRole === 'driver' && styles.selectedRoleCard3D]} onPress={() => setSelectedRole('driver')} activeOpacity={0.8}>
+//               <Text style={[styles.roleText, selectedRole === 'driver' && styles.selectedRoleText3D]}>{currentText.driverRole}</Text>
+//             </TouchableOpacity>
+//           </View>
+
+//           <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handleSignUp} activeOpacity={0.8}>
+//             <Text style={styles.glowPrimaryBtnText}>{currentText.signUpBtn}</Text>
+//           </TouchableOpacity>
+//         </ScrollView>
+//       )}
+
+//       {user && (
+//         <View style={{ flex: 1 }}>
+//           <View style={styles.tabContainer3D}>
+//             <TouchableOpacity style={[styles.tab3D, activeTab === 'feed' && styles.activeTab3D]} onPress={() => setActiveTab('feed')} activeOpacity={0.8}>
+//               <Text style={[styles.tabText3D, activeTab === 'feed' && styles.activeTabText3D]}>{currentText.findRide}</Text>
+//             </TouchableOpacity>
+
+//             {user.role === 'passenger' && (
+//               <TouchableOpacity style={[styles.tab3D, activeTab === 'bookings' && styles.activeTab3D]} onPress={() => setActiveTab('bookings')} activeOpacity={0.8}>
+//                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6}}>
+//                   <Text style={[styles.tabText3D, activeTab === 'bookings' && styles.activeTabText3D]}>{currentText.myBookings}</Text>
+//                   {unreadCount > 0 && <View style={styles.notificationDot} />}
 //                 </View>
-//                 <Text style={styles.heroTag}>VERIFIED ETHIOPIAN POOL</Text>
-//                 <Text style={styles.authTitle}>{currentText.welcomeTitle}</Text>
-//                 <Text style={styles.authSubtitle}>{currentText.welcomeSubtitle}</Text>
-//               </View>
-
-//               <View style={styles.welcomeButtonGroup}>
-//                 <TouchableOpacity style={styles.glowPrimaryBtn} onPress={() => setAuthView('signin')} activeOpacity={0.8}>
-//                   <Text style={styles.glowPrimaryBtnText}>{currentText.signInNavBtn}</Text>
-//                 </TouchableOpacity>
-//                 <TouchableOpacity style={styles.glossSecondaryBtn} onPress={() => setAuthView('signup')} activeOpacity={0.8}>
-//                   <Text style={styles.glossSecondaryBtnText}>{currentText.signUpNavBtn}</Text>
-//                 </TouchableOpacity>
-//               </View>
-//             </ScrollView>
-//           )}
-
-//           {!user && authView === 'signin' && (
-//             <ScrollView contentContainerStyle={styles.authContainer}>
-//               <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
-//                 <Text style={styles.backLinkText}>{currentText.backBtn}</Text>
 //               </TouchableOpacity>
-//               <Text style={styles.authTitle}>{currentText.signInTitle}</Text>
-//               <Text style={styles.authSubtitle}>{currentText.signInSubtitle}</Text>
+//             )}
 
-//               <Text style={styles.label}>{currentText.phoneLabel}</Text>
-//               <TextInput style={styles.input3D} placeholder="0911223344" placeholderTextColor="#94A3B8" keyboardType="phone-pad" value={phoneInput} onChangeText={setPhoneInput} />
-
-//               <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handleSignIn} activeOpacity={0.8}>
-//                 <Text style={styles.glowPrimaryBtnText}>{currentText.signInBtn}</Text>
-//               </TouchableOpacity>
-//             </ScrollView>
-//           )}
-
-//           {!user && authView === 'signup' && (
-//             <ScrollView contentContainerStyle={styles.authContainer}>
-//               <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
-//                 <Text style={styles.backLinkText}>{currentText.backBtn}</Text>
-//               </TouchableOpacity>
-//               <Text style={styles.authTitle}>{currentText.signUpTitle}</Text>
-//               <Text style={styles.authSubtitle}>{currentText.signUpSubtitle}</Text>
-
-//               <Text style={styles.label}>{currentText.nameLabel}</Text>
-//               <TextInput style={styles.input3D} placeholder="Abebe Kebede" placeholderTextColor="#94A3B8" value={fullNameInput} onChangeText={setFullNameInput} />
-
-//               <Text style={styles.label}>{currentText.phoneLabel}</Text>
-//               <TextInput style={styles.input3D} placeholder="0911223344" placeholderTextColor="#94A3B8" keyboardType="phone-pad" value={phoneInput} onChangeText={setPhoneInput} />
-
-//               <Text style={styles.label}>{currentText.roleLabel}</Text>
-//               <View style={styles.roleRow}>
-//                 <TouchableOpacity style={[styles.roleCard3D, selectedRole === 'passenger' && styles.selectedRoleCard3D]} onPress={() => setSelectedRole('passenger')} activeOpacity={0.8}>
-//                   <Text style={[styles.roleText, selectedRole === 'passenger' && styles.selectedRoleText3D]}>{currentText.passengerRole}</Text>
+//             {user.role === 'driver' && (
+//               <>
+//                 <TouchableOpacity style={[styles.tab3D, activeTab === 'post' && styles.activeTab3D]} onPress={() => setActiveTab('post')} activeOpacity={0.8}>
+//                   <Text style={[styles.tabText3D, activeTab === 'post' && styles.activeTabText3D]}>{currentText.postTrip}</Text>
 //                 </TouchableOpacity>
-//                 <TouchableOpacity style={[styles.roleCard3D, selectedRole === 'driver' && styles.selectedRoleCard3D]} onPress={() => setSelectedRole('driver')} activeOpacity={0.8}>
-//                   <Text style={[styles.roleText, selectedRole === 'driver' && styles.selectedRoleText3D]}>{currentText.driverRole}</Text>
-//                 </TouchableOpacity>
-//               </View>
-
-//               <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handleSignUp} activeOpacity={0.8}>
-//                 <Text style={styles.glowPrimaryBtnText}>{currentText.signUpBtn}</Text>
-//               </TouchableOpacity>
-//             </ScrollView>
-//           )}
-
-//           {user && (
-//             <View style={{ flex: 1 }}>
-//               <View style={styles.tabContainer3D}>
-//                 <TouchableOpacity style={[styles.tab3D, activeTab === 'feed' && styles.activeTab3D]} onPress={() => setActiveTab('feed')} activeOpacity={0.8}>
-//                   <Text style={[styles.tabText3D, activeTab === 'feed' && styles.activeTabText3D]}>{currentText.findRide}</Text>
-//                 </TouchableOpacity>
-
-//                 {user.role === 'passenger' && (
-//                   <TouchableOpacity style={[styles.tab3D, activeTab === 'bookings' && styles.activeTab3D]} onPress={() => setActiveTab('bookings')} activeOpacity={0.8}>
-//                     <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6}}>
-//                       <Text style={[styles.tabText3D, activeTab === 'bookings' && styles.activeTabText3D]}>{currentText.myBookings}</Text>
-//                       {unreadCount > 0 && <View style={styles.notificationDot} />}
-//                     </View>
-//                   </TouchableOpacity>
-//                 )}
-
-//                 {user.role === 'driver' && (
-//                   <>
-//                     <TouchableOpacity style={[styles.tab3D, activeTab === 'post' && styles.activeTab3D]} onPress={() => setActiveTab('post')} activeOpacity={0.8}>
-//                       <Text style={[styles.tabText3D, activeTab === 'post' && styles.activeTabText3D]}>{currentText.postTrip}</Text>
-//                     </TouchableOpacity>
-//                     <TouchableOpacity style={[styles.tab3D, activeTab === 'requests' && styles.activeTab3D]} onPress={() => setActiveTab('requests')} activeOpacity={0.8}>
-//                       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6}}>
-//                         <Text style={[styles.tabText3D, activeTab === 'requests' && styles.activeTabText3D]}>{currentText.driverRequests}</Text>
-//                         {unreadCount > 0 && <View style={styles.notificationDot} />}
-//                       </View>
-//                     </TouchableOpacity>
-//                   </>
-//                 )}
-//               </View>
-
-//               {activeTab === 'feed' && (
-//                 <View style={styles.content}>
-//                   <View style={styles.searchCard3D}>
-//                     <Text style={styles.searchHeader}>{currentText.liveFeedTitle}</Text>
-//                     <TextInput style={styles.input3D} placeholder={currentText.searchOriginPlaceholder} placeholderTextColor="#94A3B8" value={inputOrigin} onChangeText={setInputOrigin} />
-//                     <TextInput style={styles.input3D} placeholder={currentText.searchDestPlaceholder} placeholderTextColor="#94A3B8" value={inputDestination} onChangeText={setInputDestination} />
-//                     <View style={styles.searchButtonRow}>
-//                       <TouchableOpacity style={styles.glowPrimaryBtnSmall} onPress={() => fetchTrips(inputOrigin.trim(), inputDestination.trim())} activeOpacity={0.8}>
-//                         <Text style={styles.glowPrimaryBtnTextSmall}>{currentText.searchBtn}</Text>
-//                       </TouchableOpacity>
-//                       {(inputOrigin !== '' || inputDestination !== '') ? (
-//                         <TouchableOpacity style={styles.glossSecondaryBtnSmall} onPress={() => { setInputOrigin(''); setInputDestination(''); fetchTrips('', ''); }} activeOpacity={0.8}>
-//                           <Text style={styles.glossSecondaryBtnTextSmall}>{currentText.clearBtn}</Text>
-//                         </TouchableOpacity>
-//                       ) : null}
-//                     </View>
+//                 <TouchableOpacity style={[styles.tab3D, activeTab === 'requests' && styles.activeTab3D]} onPress={() => setActiveTab('requests')} activeOpacity={0.8}>
+//                   <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6}}>
+//                     <Text style={[styles.tabText3D, activeTab === 'requests' && styles.activeTabText3D]}>{currentText.driverRequests}</Text>
+//                     {unreadCount > 0 && <View style={styles.notificationDot} />}
 //                   </View>
+//                 </TouchableOpacity>
+//               </>
+//             )}
+//           </View>
 
-//                   <FlatList
-//                     data={trips}
-//                     keyExtractor={(item) => item.id.toString()}
-//                     renderItem={({ item }) => {
-//                       const currentSeats = selectedSeatsMap[item.id] || 1;
-//                       return (
-//                         <View style={styles.tripCard3D}>
-//                           <View style={styles.routeRow}>
-//                             <Text style={styles.routeText}>{item.origin} <Text style={{color: '#10B981'}}>➔</Text> {item.destination}</Text>
-//                             <Text style={styles.priceBadge}>{item.pricePerSeat} ETB</Text>
-//                           </View>
-//                           <Text style={styles.detailText}>🕒 {new Date(item.departureTime).toLocaleString()}</Text>
-//                           <Text style={styles.detailText}>💺 {currentText.seatsLabel}: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.availableSeats}</Text></Text>
-//                           <Text style={styles.driverText}>👤 {currentText.driverLabel}: {item.driver.fullName} | 📞 {item.driver.phoneNumber}</Text>
-                          
-//                           {user.role === 'passenger' && (
-//                             <View style={styles.seatSelectorContainer}>
-//                               <Text style={styles.seatSelectorLabel}>Seats to Request:</Text>
-//                               <View style={styles.seatCounterRow}>
-//                                 <TouchableOpacity 
-//                                   style={styles.seatControlBtn} 
-//                                   onPress={() => {
-//                                     if (currentSeats > 1) {
-//                                       setSelectedSeatsMap({ ...selectedSeatsMap, [item.id]: currentSeats - 1 });
-//                                     }
-//                                   }}
-//                                   activeOpacity={0.7}
-//                                 >
-//                                   <Text style={styles.seatControlText}>-</Text>
-//                                 </TouchableOpacity>
+//           {activeTab === 'feed' && (
+//             <View style={styles.content}>
+//               <View style={styles.searchCard3D}>
+//                 <Text style={styles.searchHeader}>{currentText.liveFeedTitle}</Text>
+//                 <TextInput style={styles.input3D} placeholder={currentText.searchOriginPlaceholder} placeholderTextColor="#94A3B8" value={inputOrigin} onChangeText={setInputOrigin} />
+//                 <TextInput style={styles.input3D} placeholder={currentText.searchDestPlaceholder} placeholderTextColor="#94A3B8" value={inputDestination} onChangeText={setInputDestination} />
+//                 <View style={styles.searchButtonRow}>
+//                   <TouchableOpacity style={styles.glowPrimaryBtnSmall} onPress={() => fetchTrips(inputOrigin.trim(), inputDestination.trim())} activeOpacity={0.8}>
+//                     <Text style={styles.glowPrimaryBtnTextSmall}>{currentText.searchBtn}</Text>
+//                   </TouchableOpacity>
+//                   {(inputOrigin !== '' || inputDestination !== '') ? (
+//                     <TouchableOpacity style={styles.glossSecondaryBtnSmall} onPress={() => { setInputOrigin(''); setInputDestination(''); fetchTrips('', ''); }} activeOpacity={0.8}>
+//                       <Text style={styles.glossSecondaryBtnTextSmall}>{currentText.clearBtn}</Text>
+//                     </TouchableOpacity>
+//                   ) : null}
+//                 </View>
+//               </View>
 
-//                                 <Text style={styles.seatCountText}>{currentSeats}</Text>
-
-//                                 <TouchableOpacity 
-//                                   style={styles.seatControlBtn} 
-//                                   onPress={() => {
-//                                     if (currentSeats < item.availableSeats) {
-//                                       setSelectedSeatsMap({ ...selectedSeatsMap, [item.id]: currentSeats + 1 });
-//                                     }
-//                                   }}
-//                                   activeOpacity={0.7}
-//                                 >
-//                                   <Text style={styles.seatControlText}>+</Text>
-//                                 </TouchableOpacity>
-//                               </View>
-
-//                               <TouchableOpacity style={styles.actionBtnGlowDark} onPress={() => handleBookSeat(item.id, currentSeats)} activeOpacity={0.8}>
-//                                 <Text style={styles.actionBtnTextDark}>{currentText.bookSeatBtn} ({currentSeats})</Text>
-//                               </TouchableOpacity>
-//                             </View>
-//                           )}
-
-//                           {user.role === 'driver' && user.id === item.driverId && (
-//                             <TouchableOpacity style={styles.actionBtnCrimson} onPress={() => handleCompleteTrip(item.id)} activeOpacity={0.8}>
-//                               <Text style={styles.actionBtnTextLight}>{currentText.completeTripBtn}</Text>
+//               <FlatList
+//                 data={trips}
+//                 keyExtractor={(item) => item.id.toString()}
+//                 renderItem={({ item }) => {
+//                   const currentSeats = selectedSeatsMap[item.id] || 1;
+//                   return (
+//                     <View style={styles.tripCard3D}>
+//                       <View style={styles.routeRow}>
+//                         <Text style={styles.routeText}>{item.origin} <Text style={{color: '#10B981'}}>➔</Text> {item.destination}</Text>
+//                         <Text style={styles.priceBadge}>{item.pricePerSeat} ETB</Text>
+//                       </View>
+//                       <Text style={styles.detailText}>🕒 {new Date(item.departureTime).toLocaleString()}</Text>
+//                       <Text style={styles.detailText}>💺 {currentText.seatsLabel}: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.availableSeats}</Text></Text>
+//                       <Text style={styles.driverText}>👤 {currentText.driverLabel}: {item.driver.fullName} | 📞 {item.driver.phoneNumber}</Text>
+                      
+//                       {user.role === 'passenger' && (
+//                         <View style={styles.seatSelectorContainer}>
+//                           <Text style={styles.seatSelectorLabel}>Seats to Request:</Text>
+//                           <View style={styles.seatCounterRow}>
+//                             <TouchableOpacity 
+//                               style={styles.seatControlBtn} 
+//                               onPress={() => {
+//                                 if (currentSeats > 1) {
+//                                   setSelectedSeatsMap({ ...selectedSeatsMap, [item.id]: currentSeats - 1 });
+//                                 }
+//                               }}
+//                               activeOpacity={0.7}
+//                             >
+//                               <Text style={styles.seatControlText}>-</Text>
 //                             </TouchableOpacity>
-//                           )}
+
+//                             <Text style={styles.seatCountText}>{currentSeats}</Text>
+
+//                             <TouchableOpacity 
+//                               style={styles.seatControlBtn} 
+//                               onPress={() => {
+//                                 if (currentSeats < item.availableSeats) {
+//                                   setSelectedSeatsMap({ ...selectedSeatsMap, [item.id]: currentSeats + 1 });
+//                                 }
+//                               }}
+//                               activeOpacity={0.7}
+//                             >
+//                               <Text style={styles.seatControlText}>+</Text>
+//                             </TouchableOpacity>
+//                           </View>
+
+//                           <TouchableOpacity style={styles.actionBtnGlowDark} onPress={() => handleBookSeat(item.id, currentSeats)} activeOpacity={0.8}>
+//                             <Text style={styles.actionBtnTextDark}>{currentText.bookSeatBtn} ({currentSeats})</Text>
+//                           </TouchableOpacity>
 //                         </View>
-//                       );
-//                     }}
-//                     ListEmptyComponent={<Text style={styles.emptyText}>{currentText.noTrips}</Text>}
-//                   />
-//                 </View>
-//               )}
+//                       )}
 
-//               {activeTab === 'bookings' && user.role === 'passenger' && (
-//                 <View style={styles.content}>
-//                   <Text style={styles.formTitle}>My Bookings & Radar</Text>
-//                   <FlatList
-//                     data={bookings}
-//                     keyExtractor={(item) => item.id.toString()}
-//                     renderItem={({ item }) => (
-//                       <View style={[styles.tripCard3D, item.status === 'confirmed' && { borderColor: '#10B981', backgroundColor: '#F0FDF4' }]}>
-//                         <Text style={styles.routeText}>Route: {item.trip?.origin} ➔ {item.trip?.destination}</Text>
-//                         <Text style={styles.detailText}>💺 Seats Booked: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
-//                         <Text style={styles.detailText}>Status: <Text style={{fontWeight: '900', color: item.status === 'confirmed' ? '#10B981' : item.status === 'rejected' ? '#EF4444' : '#F59E0B'}}>
-//                           {item.status === 'confirmed' ? currentText.confirmedStatus : item.status === 'rejected' ? currentText.rejectedStatus : currentText.pendingStatus}
-//                         </Text></Text>
+//                       {user.role === 'driver' && user.id === item.driverId && (
+//                         <TouchableOpacity style={styles.actionBtnCrimson} onPress={() => handleCompleteTrip(item.id)} activeOpacity={0.8}>
+//                           <Text style={styles.actionBtnTextLight}>{currentText.completeTripBtn}</Text>
+//                         </TouchableOpacity>
+//                       )}
+//                     </View>
+//                   );
+//                 }}
+//                 ListEmptyComponent={<Text style={styles.emptyText}>{currentText.noTrips}</Text>}
+//               />
+//             </View>
+//           )}
 
-//                         {item.pickupLat && item.pickupLng && (
-//                           <LiveMap latitude={item.pickupLat} longitude={item.pickupLng} title="Your Shared Pickup Point" />
-//                         )}
+//           {activeTab === 'bookings' && user.role === 'passenger' && (
+//             <View style={styles.content}>
+//               <Text style={styles.formTitle}>My Bookings & Radar</Text>
+//               <FlatList
+//                 data={bookings}
+//                 keyExtractor={(item) => item.id.toString()}
+//                 renderItem={({ item }) => (
+//                   <View style={[styles.tripCard3D, item.status === 'confirmed' && { borderColor: '#10B981', backgroundColor: '#F0FDF4' }]}>
+//                     <Text style={styles.routeText}>Route: {item.trip?.origin} ➔ {item.trip?.destination}</Text>
+//                     <Text style={styles.detailText}>💺 Seats Booked: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
+//                     <Text style={styles.detailText}>Status: <Text style={{fontWeight: '900', color: item.status === 'confirmed' ? '#10B981' : item.status === 'rejected' ? '#EF4444' : '#F59E0B'}}>
+//                       {item.status === 'confirmed' ? currentText.confirmedStatus : item.status === 'rejected' ? currentText.rejectedStatus : currentText.pendingStatus}
+//                     </Text></Text>
 
-//                         {item.status === 'confirmed' && item.trip && (
-//                           <View style={styles.buttonActionGroup}>
-//                             <TouchableOpacity style={styles.actionBtnEmerald} onPress={() => handleCallDriver(item.trip!.driver.phoneNumber)} activeOpacity={0.8}>
-//                               <Text style={styles.actionBtnTextLight}>{currentText.callDriverBtn}</Text>
-//                             </TouchableOpacity>
-//                             <TouchableOpacity style={styles.actionBtnIndigo} onPress={() => handleSendLocation(item.id)} activeOpacity={0.8}>
-//                               <Text style={styles.actionBtnTextLight}>{currentText.sendLocationBtn}</Text>
-//                             </TouchableOpacity>
-//                           </View>
-//                         )}
-//                       </View>
+//                     {item.pickupLat && item.pickupLng && (
+//                       <LiveMap latitude={item.pickupLat} longitude={item.pickupLng} title="Your Shared Pickup Point" />
 //                     )}
-//                     ListEmptyComponent={<Text style={styles.emptyText}>{currentText.noBookings}</Text>}
-//                   />
-//                 </View>
-//               )}
 
-//               {activeTab === 'requests' && user.role === 'driver' && (
-//                 <View style={styles.content}>
-//                   <Text style={styles.formTitle}>Incoming Passenger Radar</Text>
-//                   <FlatList
-//                     data={bookings}
-//                     keyExtractor={(item) => item.id.toString()}
-//                     renderItem={({ item }) => (
-//                       <View style={styles.tripCard3D}>
-//                         <Text style={styles.routeText}>Route: {item.tripOrigin} ➔ {item.tripDestination}</Text>
-//                         <Text style={styles.detailText}>👤 Booker: {item.passenger?.fullName} | 📞 {item.passenger?.phoneNumber}</Text>
-//                         <Text style={styles.detailText}>💺 Seats Requested: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
-//                         <Text style={styles.detailText}>Status: <Text style={{fontWeight: '900', color: item.status === 'confirmed' ? '#10B981' : '#EF4444'}}>{item.status.toUpperCase()}</Text></Text>
-
-//                         {item.pickupLat && item.pickupLng && (
-//                           <>
-//                             <LiveMap latitude={item.pickupLat} longitude={item.pickupLng} title={`${item.passenger?.fullName}'s Location`} />
-//                             <TouchableOpacity style={styles.actionBtnAmber} onPress={() => handleOpenMap(item.pickupLat!, item.pickupLng!)} activeOpacity={0.8}>
-//                               <Text style={styles.actionBtnTextLight}>{currentText.viewMapBtn}</Text>
-//                             </TouchableOpacity>
-//                           </>
-//                         )}
-
-//                         {item.status === 'pending' && (
-//                           <View style={styles.buttonActionGroup}>
-//                             <TouchableOpacity style={styles.actionBtnEmerald} onPress={() => handleUpdateBookingStatus(item.id, 'confirmed')} activeOpacity={0.8}>
-//                               <Text style={styles.actionBtnTextLight}>{currentText.acceptBtn}</Text>
-//                             </TouchableOpacity>
-//                             <TouchableOpacity style={styles.actionBtnCrimson} onPress={() => handleUpdateBookingStatus(item.id, 'rejected')} activeOpacity={0.8}>
-//                               <Text style={styles.actionBtnTextLight}>{currentText.rejectBtn}</Text>
-//                             </TouchableOpacity>
-//                           </View>
-//                         )}
-//                       </View>
-//                     )}
-//                     ListEmptyComponent={<Text style={styles.emptyText}>{currentText.noBookings}</Text>}
-//                   />
-//                 </View>
-//               )}
-
-//               {activeTab === 'post' && user.role === 'driver' && (
-//                 <ScrollView contentContainerStyle={styles.formContainer}>
-//                   <Text style={styles.formTitle}>{currentText.publishTitle}</Text>
-                  
-//                   <Text style={styles.label}>{currentText.originPlaceholder}</Text>
-//                   <TextInput style={styles.input3D} placeholder="Megenagna, Addis Ababa" placeholderTextColor="#94A3B8" value={origin} onChangeText={setOrigin} />
-                  
-//                   <Text style={styles.label}>{currentText.destPlaceholder}</Text>
-//                   <TextInput style={styles.input3D} placeholder="Adama" placeholderTextColor="#94A3B8" value={destination} onChangeText={setDestination} />
-                  
-//                   <Text style={styles.label}>{currentText.timeLabel}</Text>
-//                   <TextInput style={styles.input3D} placeholder="2026-08-25 14:30" placeholderTextColor="#94A3B8" value={departureTime} onChangeText={setDepartureTime} />
-
-//                   <Text style={styles.label}>{currentText.seatsPlaceholder}</Text>
-//                   <TextInput style={styles.input3D} placeholder="3" placeholderTextColor="#94A3B8" keyboardType="numeric" value={availableSeats} onChangeText={setAvailableSeats} />
-
-//                   <View style={styles.fareCalculatorBox}>
-//                     <Text style={styles.fareCalculatorHeader}>💡 Smart Fare Estimator</Text>
-//                     <Text style={styles.label}>Rate per KM (ETB)</Text>
-//                     <TextInput 
-//                       style={[styles.input3D, { marginBottom: 8 }]} 
-//                       placeholder="15" 
-//                       placeholderTextColor="#94A3B8" 
-//                       keyboardType="numeric" 
-//                       value={ratePerKm} 
-//                       onChangeText={setRatePerKm} 
-//                     />
-
-//                     {origin.trim() !== '' && destination.trim() !== '' && (
-//                       <View style={styles.farePreviewRow}>
-//                         <Text style={styles.farePreviewText}>
-//                           Est. Distance: <Text style={{fontWeight: '900', color: '#0F172A'}}>{estimateRouteDistance(origin, destination)} km</Text>
-//                         </Text>
-//                         <TouchableOpacity 
-//                           style={styles.autoFillBtn}
-//                           onPress={() => {
-//                             const suggested = calculateSuggestedFare(origin, destination, Number(ratePerKm || 15));
-//                             setPricePerSeat(suggested.toString());
-//                             showAlertBanner(`✨ Auto-calculated fare set to ${suggested} ETB!`);
-//                           }}
-//                           activeOpacity={0.8}
-//                         >
-//                           <Text style={styles.autoFillBtnText}>Auto-Fill Fare</Text>
+//                     {item.status === 'confirmed' && item.trip && (
+//                       <View style={styles.buttonActionGroup}>
+//                         <TouchableOpacity style={styles.actionBtnEmerald} onPress={() => handleCallDriver(item.trip!.driver.phoneNumber)} activeOpacity={0.8}>
+//                           <Text style={styles.actionBtnTextLight}>{currentText.callDriverBtn}</Text>
+//                         </TouchableOpacity>
+//                         <TouchableOpacity style={styles.actionBtnIndigo} onPress={() => handleSendLocation(item.id)} activeOpacity={0.8}>
+//                           <Text style={styles.actionBtnTextLight}>{currentText.sendLocationBtn}</Text>
 //                         </TouchableOpacity>
 //                       </View>
 //                     )}
 //                   </View>
-                  
-//                   <Text style={styles.label}>{currentText.pricePlaceholder}</Text>
-//                   <TextInput style={styles.input3D} placeholder="350" placeholderTextColor="#94A3B8" keyboardType="numeric" value={pricePerSeat} onChangeText={setPricePerSeat} />
-
-//                   <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handlePostTrip} activeOpacity={0.8}>
-//                     <Text style={styles.glowPrimaryBtnText}>{currentText.publishBtn}</Text>
-//                   </TouchableOpacity>
-//                 </ScrollView>
-//               )}
+//                 )}
+//                 ListEmptyComponent={<Text style={styles.emptyText}>{currentText.noBookings}</Text>}
+//               />
 //             </View>
 //           )}
 
-//         </SafeAreaView>
-//       </View>
-//     </View>
+//           {activeTab === 'requests' && user.role === 'driver' && (
+//             <View style={styles.content}>
+//               <Text style={styles.formTitle}>Incoming Passenger Radar</Text>
+//               <FlatList
+//                 data={bookings}
+//                 keyExtractor={(item) => item.id.toString()}
+//                 renderItem={({ item }) => (
+//                   <View style={styles.tripCard3D}>
+//                     <Text style={styles.routeText}>Route: {item.tripOrigin} ➔ {item.tripDestination}</Text>
+//                     <Text style={styles.detailText}>👤 Booker: {item.passenger?.fullName} | 📞 {item.passenger?.phoneNumber}</Text>
+//                     <Text style={styles.detailText}>💺 Seats Requested: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
+//                     <Text style={styles.detailText}>Status: <Text style={{fontWeight: '900', color: item.status === 'confirmed' ? '#10B981' : '#EF4444'}}>{item.status.toUpperCase()}</Text></Text>
+
+//                     {item.pickupLat && item.pickupLng && (
+//                       <>
+//                         <LiveMap latitude={item.pickupLat} longitude={item.pickupLng} title={`${item.passenger?.fullName}'s Location`} />
+//                         <TouchableOpacity style={styles.actionBtnAmber} onPress={() => handleOpenMap(item.pickupLat!, item.pickupLng!)} activeOpacity={0.8}>
+//                           <Text style={styles.actionBtnTextLight}>{currentText.viewMapBtn}</Text>
+//                         </TouchableOpacity>
+//                       </>
+//                     )}
+
+//                     {item.status === 'pending' && (
+//                       <View style={styles.buttonActionGroup}>
+//                         <TouchableOpacity style={styles.actionBtnEmerald} onPress={() => handleUpdateBookingStatus(item.id, 'confirmed')} activeOpacity={0.8}>
+//                           <Text style={styles.actionBtnTextLight}>{currentText.acceptBtn}</Text>
+//                         </TouchableOpacity>
+//                         <TouchableOpacity style={styles.actionBtnCrimson} onPress={() => handleUpdateBookingStatus(item.id, 'rejected')} activeOpacity={0.8}>
+//                           <Text style={styles.actionBtnTextLight}>{currentText.rejectBtn}</Text>
+//                         </TouchableOpacity>
+//                       </View>
+//                     )}
+//                   </View>
+//                 )}
+//                 ListEmptyComponent={<Text style={styles.emptyText}>{currentText.noBookings}</Text>}
+//               />
+//             </View>
+//           )}
+
+//           {activeTab === 'post' && user.role === 'driver' && (
+//             <ScrollView contentContainerStyle={styles.formContainer}>
+//               <Text style={styles.formTitle}>{currentText.publishTitle}</Text>
+              
+//               <Text style={styles.label}>{currentText.originPlaceholder}</Text>
+//               <TextInput style={styles.input3D} placeholder="Megenagna, Addis Ababa" placeholderTextColor="#94A3B8" value={origin} onChangeText={setOrigin} />
+              
+//               <Text style={styles.label}>{currentText.destPlaceholder}</Text>
+//               <TextInput style={styles.input3D} placeholder="Adama" placeholderTextColor="#94A3B8" value={destination} onChangeText={setDestination} />
+              
+//               <Text style={styles.label}>{currentText.timeLabel}</Text>
+//               <TextInput style={styles.input3D} placeholder="2026-08-25 14:30" placeholderTextColor="#94A3B8" value={departureTime} onChangeText={setDepartureTime} />
+
+//               <Text style={styles.label}>{currentText.seatsPlaceholder}</Text>
+//               <TextInput style={styles.input3D} placeholder="3" placeholderTextColor="#94A3B8" keyboardType="numeric" value={availableSeats} onChangeText={setAvailableSeats} />
+
+//               <View style={styles.fareCalculatorBox}>
+//                 <Text style={styles.fareCalculatorHeader}>💡 Smart Fare Estimator</Text>
+//                 <Text style={styles.label}>Rate per KM (ETB)</Text>
+//                 <TextInput 
+//                   style={[styles.input3D, { marginBottom: 8 }]} 
+//                   placeholder="15" 
+//                   placeholderTextColor="#94A3B8" 
+//                   keyboardType="numeric" 
+//                   value={ratePerKm} 
+//                   onChangeText={setRatePerKm} 
+//                 />
+
+//                 {origin.trim() !== '' && destination.trim() !== '' && (
+//                   <View style={styles.farePreviewRow}>
+//                     <Text style={styles.farePreviewText}>
+//                       Est. Distance: <Text style={{fontWeight: '900', color: '#0F172A'}}>{estimateRouteDistance(origin, destination)} km</Text>
+//                     </Text>
+//                     <TouchableOpacity 
+//                       style={styles.autoFillBtn}
+//                       onPress={() => {
+//                         const suggested = calculateSuggestedFare(origin, destination, Number(ratePerKm || 15));
+//                         setPricePerSeat(suggested.toString());
+//                         showAlertBanner(`✨ Auto-calculated fare set to ${suggested} ETB!`);
+//                       }}
+//                       activeOpacity={0.8}
+//                     >
+//                       <Text style={styles.autoFillBtnText}>Auto-Fill Fare</Text>
+//                     </TouchableOpacity>
+//                   </View>
+//                 )}
+//               </View>
+              
+//               <Text style={styles.label}>{currentText.pricePlaceholder}</Text>
+//               <TextInput style={styles.input3D} placeholder="350" placeholderTextColor="#94A3B8" keyboardType="numeric" value={pricePerSeat} onChangeText={setPricePerSeat} />
+
+//               <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handlePostTrip} activeOpacity={0.8}>
+//                 <Text style={styles.glowPrimaryBtnText}>{currentText.publishBtn}</Text>
+//               </TouchableOpacity>
+//             </ScrollView>
+//           )}
+//         </View>
+//       )}
+//     </SafeAreaView>
 //   );
 // }
 
 // const styles = StyleSheet.create({
-//   // browserBackground: {
-//   //   flex: 1,
-//   //   backgroundColor: '#030712',
-//   //   justifyContent: 'center',
-//   //   alignItems: 'center',
-//   //   ...(Platform.OS === 'web' ? { minHeight: '100vh' } : {})
-//   // } as any,
-//   browserBackground: {
+//   container: {
 //     flex: 1,
-//     backgroundColor: '#FFFFFF',
-//   } as any,
-//   // phoneContainer: {
-//   //   flex: 1,
-//   //   width: '100%',
-//   //   maxWidth: 360,
-//   //   maxHeight: 740,
-//   //   backgroundColor: '#FFFFFF',
-//   //   overflow: 'hidden',
-//   //   ...(Platform.OS === 'web' ? {
-//   //     boxShadow: '0 30px 80px -10px rgba(16, 185, 129, 0.35)',
-//   //     borderRadius: 40,
-//   //     borderWidth: 6,
-//   //     borderColor: '#1E293B',
-//   //   } : {})
-//   // } as any,
-//   phoneContainer: {
-//     flex: 1,
+//     backgroundColor: '#F8FAFC',
 //     width: '100%',
-//     backgroundColor: '#FFFFFF',
-//   } as any,
-//   container: { flex: 1, backgroundColor: '#F8FAFC' },
+//     height: '100%',
+//   },
 //   header: { 
 //     paddingHorizontal: 16,
 //     paddingVertical: 14,
@@ -1020,15 +990,15 @@ const t = {
   en: {
     appName: "Guzo-Share",
     subtitle: "PREMIER TRANSIT NETWORK",
-    welcomeTitle: "Smart City Commuting",
-    welcomeSubtitle: "Seamless, secure city-to-city peer vehicle pooling across Ethiopia.",
+    welcomeTitle: "Smart Ethiopian Intercity Pooling",
+    welcomeSubtitle: "Connect directly with verified drivers and passengers across Addis Ababa, Adama, Hawassa, and nationwide corridors.",
     signInNavBtn: "Sign In",
     signUpNavBtn: "Get Started",
     backBtn: "← Back",
     signInTitle: "Welcome Back",
     signInSubtitle: "Authenticate with your registered phone number",
     signUpTitle: "Create Account",
-    signUpSubtitle: "Join the elite network of commuters & drivers",
+    signUpSubtitle: "Join the premier network of commuters & verified drivers",
     nameLabel: "Full Name",
     phoneLabel: "Phone Number (e.g. 0911...)",
     roleLabel: "Account Role",
@@ -1042,8 +1012,8 @@ const t = {
     myBookings: "Bookings",
     driverRequests: "Requests",
     liveFeedTitle: "Live Travel Network",
-    searchOriginPlaceholder: "Search Origin...",
-    searchDestPlaceholder: "Search Destination...",
+    searchOriginPlaceholder: "Search Origin (e.g. Megenagna)...",
+    searchDestPlaceholder: "Search Destination (e.g. Adama)...",
     searchBtn: "Filter Route",
     clearBtn: "Reset",
     noTrips: "No active trips found on this route.",
@@ -1074,15 +1044,15 @@ const t = {
   am: {
     appName: "ጉዞ-ሼር",
     subtitle: "የኢትዮጵያ የጉዞ ማካፍያ",
-    welcomeTitle: "ዘመናዊ የከተማ ጉዞ",
-    welcomeSubtitle: "ደህንነቱ የተጠበቀ የከተማዎች መካከል የትራንስፖርት መረብ።",
+    welcomeTitle: "ዘመናዊ የከተሞች መካከል ጉዞ",
+    welcomeSubtitle: "ከአዲስ አበባ፣ አዳማ፣ ሃዋሳ እና በመላ አገሪቱ ከታመኑ አሽከርካሪዎች እና ተጓዦች ጋር በቀላሉ ይገናኙ።",
     signInNavBtn: "ግባ",
     signUpNavBtn: "ተመዝገብ",
     backBtn: "← ተመለስ",
     signInTitle: "እንኳን ደህና መጡ",
     signInSubtitle: "በተመዘገቡበት ስልክ ቁጥር ይግቡ",
     signUpTitle: "አዲስ መለያ ይፍጠሩ",
-    signUpSubtitle: "ለመጓዝ ወይም ጉዞዎችን ለማካፈል ይመዝገቡ",
+    signUpSubtitle: "ለመጓዝ ወይም ጉዞዎችን ለማካፈል አሁኑኑ ይመዝገቡ",
     nameLabel: "ሙሉ ስም",
     phoneLabel: "ስልክ ቁጥር",
     roleLabel: "የእርስዎን ሚና ይምረጡ",
@@ -1096,8 +1066,8 @@ const t = {
     myBookings: "ጉዞዎች",
     driverRequests: "ጥያቄዎች",
     liveFeedTitle: "ንቁ የጉዞ መረቦች",
-    searchOriginPlaceholder: "መነሻ...",
-    searchDestPlaceholder: "መዳረሻ...",
+    searchOriginPlaceholder: "መነሻ (ምሳሌ፦ መገናኛ)...",
+    searchDestPlaceholder: "መዳረሻ (ምሳሌ፦ አዳማ)...",
     searchBtn: "ፈልግ",
     clearBtn: "አጥፋ",
     noTrips: "ምንም ንቁ ጉዞ የለም።",
@@ -1348,7 +1318,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
+      {/* Top Navigation Bar */}
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>ጉዞ-ሼር <Text style={{color: '#10B981'}}>Guzo</Text></Text>
@@ -1372,29 +1342,116 @@ export default function HomeScreen() {
         </View>
       )}
 
+      {/* Landing Page with 3D Dashboard Highlights */}
       {!user && authView === 'welcome' && (
-        <ScrollView contentContainerStyle={styles.welcomeContainer}>
+        <ScrollView contentContainerStyle={styles.welcomeContainer} showsVerticalScrollIndicator={false}>
+          {/* Main Hero Card */}
           <View style={styles.heroCard3D}>
             <View style={styles.heroGlowOverlay} />
-            <View style={styles.heroIconCircle}>
-              <Text style={styles.heroEmoji}>🚘⚡</Text>
+            <View style={styles.heroBadgeRow}>
+              <View style={styles.heroIconCircle}>
+                <Text style={styles.heroEmoji}>🚘⚡</Text>
+              </View>
+              <View style={styles.livePulseBadge}>
+                <View style={styles.pulseDot} />
+                <Text style={styles.livePulseText}>LIVE INTERCITY POOL</Text>
+              </View>
             </View>
-            <Text style={styles.heroTag}>VERIFIED ETHIOPIAN POOL</Text>
+
             <Text style={styles.authTitle}>{currentText.welcomeTitle}</Text>
             <Text style={styles.authSubtitle}>{currentText.welcomeSubtitle}</Text>
+
+            {/* Quick Metrics Strip */}
+            <View style={styles.metricStrip3D}>
+              <View style={styles.metricItem}>
+                <Text style={styles.metricVal}>100%</Text>
+                <Text style={styles.metricLbl}>Verified IDs</Text>
+              </View>
+              <View style={styles.metricDivider} />
+              <View style={styles.metricItem}>
+                <Text style={styles.metricVal}>40-60%</Text>
+                <Text style={styles.metricLbl}>Fare Savings</Text>
+              </View>
+              <View style={styles.metricDivider} />
+              <View style={styles.metricItem}>
+                <Text style={styles.metricVal}>GPS</Text>
+                <Text style={styles.metricLbl}>Live Radar</Text>
+              </View>
+            </View>
           </View>
 
+          {/* Action Button Group */}
           <View style={styles.welcomeButtonGroup}>
-            <TouchableOpacity style={styles.glowPrimaryBtn} onPress={() => setAuthView('signin')} activeOpacity={0.8}>
-              <Text style={styles.glowPrimaryBtnText}>{currentText.signInNavBtn}</Text>
+            <TouchableOpacity style={styles.glowPrimaryBtn} onPress={() => setAuthView('signup')} activeOpacity={0.85}>
+              <Text style={styles.glowPrimaryBtnText}>⚡ {currentText.signUpNavBtn}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.glossSecondaryBtn} onPress={() => setAuthView('signup')} activeOpacity={0.8}>
-              <Text style={styles.glossSecondaryBtnText}>{currentText.signUpNavBtn}</Text>
+            <TouchableOpacity style={styles.glossSecondaryBtn} onPress={() => setAuthView('signin')} activeOpacity={0.85}>
+              <Text style={styles.glossSecondaryBtnText}>{currentText.signInNavBtn}</Text>
             </TouchableOpacity>
+          </View>
+
+          {/* Dashboard Highlight Features */}
+          <View style={styles.sectionHeaderWrap}>
+            <Text style={styles.sectionHeaderTag}>SMART PLATFORM HIGHLIGHTS</Text>
+            <Text style={styles.sectionHeaderTitle}>Why Commuters Choose Guzo-Share</Text>
+          </View>
+
+          <View style={styles.featureGrid}>
+            <View style={styles.featureCard3D}>
+              <View style={styles.featureIconWrap}>
+                <Text style={styles.featureEmoji}>🛰️</Text>
+              </View>
+              <Text style={styles.featureTitle}>Real-Time GPS Radar</Text>
+              <Text style={styles.featureDesc}>
+                Passengers transmit live pickup coordinates directly to the driver's route view for seamless rendezvous.
+              </Text>
+            </View>
+
+            <View style={styles.featureCard3D}>
+              <View style={styles.featureIconWrap}>
+                <Text style={styles.featureEmoji}>💰</Text>
+              </View>
+              <Text style={styles.featureTitle}>Automated Fare Calculation</Text>
+              <Text style={styles.featureDesc}>
+                Built-in distance estimator ensures fair, predictable ETB pricing per seat according to distance traveled.
+              </Text>
+            </View>
+
+            <View style={styles.featureCard3D}>
+              <View style={styles.featureIconWrap}>
+                <Text style={styles.featureEmoji}>🛡️</Text>
+              </View>
+              <Text style={styles.featureTitle}>Peer Verification</Text>
+              <Text style={styles.featureDesc}>
+                Direct telephone and passenger dispatch confirmation prevents unverified bookings and ghost trips.
+              </Text>
+            </View>
+
+            <View style={styles.featureCard3D}>
+              <View style={styles.featureIconWrap}>
+                <Text style={styles.featureEmoji}>🇪🇹</Text>
+              </View>
+              <Text style={styles.featureTitle}>Nationwide Route Coverage</Text>
+              <Text style={styles.featureDesc}>
+                Frequent daily routes connecting Addis Ababa, Bishoftu, Adama, Hawassa, Bahir Dar, and beyond.
+              </Text>
+            </View>
+          </View>
+
+          {/* Popular Corridors Callout */}
+          <View style={styles.corridorCard3D}>
+            <Text style={styles.corridorTitle}>🔥 Popular Corridors</Text>
+            <View style={styles.corridorPillRow}>
+              <View style={styles.corridorPill}><Text style={styles.corridorPillText}>Addis ➔ Adama</Text></View>
+              <View style={styles.corridorPill}><Text style={styles.corridorPillText}>Addis ➔ Hawassa</Text></View>
+              <View style={styles.corridorPill}><Text style={styles.corridorPillText}>Bole ➔ Megenagna</Text></View>
+              <View style={styles.corridorPill}><Text style={styles.corridorPillText}>Addis ➔ Debre Zeit</Text></View>
+            </View>
           </View>
         </ScrollView>
       )}
 
+      {/* Sign In Screen */}
       {!user && authView === 'signin' && (
         <ScrollView contentContainerStyle={styles.authContainer}>
           <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
@@ -1412,6 +1469,7 @@ export default function HomeScreen() {
         </ScrollView>
       )}
 
+      {/* Sign Up Screen */}
       {!user && authView === 'signup' && (
         <ScrollView contentContainerStyle={styles.authContainer}>
           <TouchableOpacity onPress={() => setAuthView('welcome')} style={styles.backLink} activeOpacity={0.7}>
@@ -1442,6 +1500,7 @@ export default function HomeScreen() {
         </ScrollView>
       )}
 
+      {/* Authenticated Dashboard */}
       {user && (
         <View style={{ flex: 1 }}>
           <View style={styles.tabContainer3D}>
@@ -1738,18 +1797,22 @@ const styles = StyleSheet.create({
     borderColor: '#A7F3D0' 
   },
   bannerText: { color: '#065F46', fontWeight: '800', fontSize: 11, textAlign: 'center' },
-  welcomeContainer: { padding: 20, justifyContent: 'center', alignItems: 'center', flexGrow: 1, backgroundColor: '#F8FAFC' },
+  
+  welcomeContainer: { 
+    padding: 16, 
+    paddingBottom: 40,
+    backgroundColor: '#F8FAFC' 
+  },
   heroCard3D: {
     width: '100%',
     backgroundColor: '#FFFFFF',
     borderRadius: 24,
-    padding: 24,
-    alignItems: 'center',
-    marginBottom: 20,
+    padding: 20,
+    marginBottom: 16,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     ...(Platform.OS === 'web' ? {
-      boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.08)'
+      boxShadow: '0 20px 40px -15px rgba(16, 185, 129, 0.12)'
     } : {})
   } as any,
   heroGlowOverlay: {
@@ -1757,27 +1820,192 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: 6,
+    height: 5,
     backgroundColor: '#10B981',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24
   },
+  heroBadgeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12
+  },
   heroIconCircle: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     backgroundColor: '#ECFDF5',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 14,
     borderWidth: 1,
     borderColor: '#A7F3D0'
   },
-  heroEmoji: { fontSize: 28 },
-  heroTag: { fontSize: 9, fontWeight: '900', color: '#10B981', letterSpacing: 1.5, marginBottom: 8 },
-  authTitle: { fontSize: 22, fontWeight: '900', color: '#0F172A', marginBottom: 6, textAlign: 'center', letterSpacing: -0.5 },
-  authSubtitle: { fontSize: 12, color: '#64748B', textAlign: 'center', lineHeight: 18, fontWeight: '600' },
-  welcomeButtonGroup: { width: '100%', gap: 10 },
+  heroEmoji: { fontSize: 24 },
+  livePulseBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#86EFAC',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+    gap: 6
+  },
+  pulseDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#10B981'
+  },
+  livePulseText: {
+    fontSize: 9,
+    fontWeight: '900',
+    color: '#065F46',
+    letterSpacing: 0.8
+  },
+  authTitle: { 
+    fontSize: 22, 
+    fontWeight: '900', 
+    color: '#0F172A', 
+    marginBottom: 6, 
+    letterSpacing: -0.5 
+  },
+  authSubtitle: { 
+    fontSize: 12, 
+    color: '#64748B', 
+    lineHeight: 18, 
+    fontWeight: '600',
+    marginBottom: 16
+  },
+  metricStrip3D: {
+    flexDirection: 'row',
+    backgroundColor: '#F8FAFC',
+    borderRadius: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  metricItem: {
+    alignItems: 'center'
+  },
+  metricVal: {
+    fontSize: 14,
+    fontWeight: '900',
+    color: '#10B981'
+  },
+  metricLbl: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: '#64748B',
+    marginTop: 2,
+    textTransform: 'uppercase'
+  },
+  metricDivider: {
+    width: 1,
+    height: 24,
+    backgroundColor: '#E2E8F0'
+  },
+  welcomeButtonGroup: { 
+    width: '100%', 
+    gap: 10, 
+    marginBottom: 24 
+  },
+  
+  sectionHeaderWrap: {
+    marginBottom: 14,
+    marginTop: 6
+  },
+  sectionHeaderTag: {
+    fontSize: 10,
+    fontWeight: '900',
+    color: '#10B981',
+    letterSpacing: 1.2,
+    marginBottom: 2
+  },
+  sectionHeaderTitle: {
+    fontSize: 16,
+    fontWeight: '900',
+    color: '#0F172A',
+    letterSpacing: -0.3
+  },
+  featureGrid: {
+    gap: 12,
+    marginBottom: 20
+  },
+  featureCard3D: {
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    ...(Platform.OS === 'web' ? {
+      boxShadow: '0 8px 20px -8px rgba(0, 0, 0, 0.05)'
+    } : {})
+  } as any,
+  featureIconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: '#F1F5F9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10
+  },
+  featureEmoji: {
+    fontSize: 18
+  },
+  featureTitle: {
+    fontSize: 13,
+    fontWeight: '900',
+    color: '#0F172A',
+    marginBottom: 4
+  },
+  featureDesc: {
+    fontSize: 11,
+    color: '#64748B',
+    lineHeight: 16,
+    fontWeight: '500'
+  },
+
+  corridorCard3D: {
+    backgroundColor: '#0F172A',
+    padding: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#1E293B',
+    marginBottom: 10
+  },
+  corridorTitle: {
+    fontSize: 12,
+    fontWeight: '900',
+    color: '#F8FAFC',
+    marginBottom: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 0.8
+  },
+  corridorPillRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6
+  },
+  corridorPill: {
+    backgroundColor: '#1E293B',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#334155'
+  },
+  corridorPillText: {
+    color: '#34D399',
+    fontSize: 10,
+    fontWeight: '800'
+  },
+
   authContainer: { padding: 20, justifyContent: 'center', flexGrow: 1, backgroundColor: '#F8FAFC' },
   backLink: { marginBottom: 12 },
   backLinkText: { fontSize: 12, fontWeight: '800', color: '#10B981' },

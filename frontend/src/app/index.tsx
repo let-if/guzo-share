@@ -922,6 +922,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList, ScrollView, Alert, SafeAreaView, Platform, Linking, StatusBar } from 'react-native';
 import axios from 'axios';
+import * as Location from 'expo-location';
 import LiveMap from '../components/LiveMap';
 import { estimateRouteDistance, calculateSuggestedFare } from '../utils/fareCalculator';
 
@@ -1238,27 +1239,26 @@ export default function HomeScreen() {
   };
 
   const handleSendLocation = async (bookingId: number) => {
-    if (!navigator.geolocation) {
-      Alert.alert('Error', 'Geolocation not supported');
-      return;
-    }
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Error', 'Please enable location permissions in your phone settings.');
+        return;
+      }
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          const response = await axios.patch(`${API_URL}/trips/bookings/${bookingId}/location`, { latitude, longitude });
-          if (response.data.success) {
-            showAlertBanner('📍 Live GPS coordinates synced with driver radar.');
-            fetchData();
-          }
-        } catch (err) {
-          Alert.alert('Error', 'Failed to transmit location');
-        }
-      },
-      () => Alert.alert('Permission Error', 'Please enable location services.'),
-      { enableHighAccuracy: true, timeout: 15000 }
-    );
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High,
+      });
+
+      const { latitude, longitude } = location.coords;
+      const response = await axios.patch(`${API_URL}/trips/bookings/${bookingId}/location`, { latitude, longitude });
+      if (response.data.success) {
+        showAlertBanner('📍 Live GPS coordinates synced with driver radar.');
+        fetchData();
+      }
+    } catch (err) {
+      Alert.alert('Error', 'Failed to retrieve or transmit location. Ensure GPS is turned on.');
+    }
   };
 
   const handleOpenMap = (lat: number, lng: number) => {
@@ -1318,7 +1318,8 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#0F172A" barStyle="light-content" />
-      {/* Top Navigation Bar */}
+      
+      {/* Top Header Bar - Fixed and Safe from Status Bar */}
       <View style={styles.header}>
         <View>
           <Text style={styles.headerTitle}>ጉዞ-ሼር <Text style={{color: '#10B981'}}>Guzo</Text></Text>
@@ -1438,9 +1439,9 @@ export default function HomeScreen() {
         </ScrollView>
       )}
 
-      {/* Authenticated Dashboard */}
+      {/* Authenticated Dashboard - Completely Scrollable Layout */}
       {user && (
-        <View style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.dashboardScrollContainer} showsVerticalScrollIndicator={false}>
           <View style={styles.tabContainer3D}>
             <TouchableOpacity style={[styles.tab3D, activeTab === 'feed' && styles.activeTab3D]} onPress={() => setActiveTab('feed')} activeOpacity={0.8}>
               <Text style={[styles.tabText3D, activeTab === 'feed' && styles.activeTabText3D]}>{currentText.findRide}</Text>
@@ -1488,13 +1489,13 @@ export default function HomeScreen() {
                 </View>
               </View>
 
-              <FlatList
-                data={trips}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => {
+              {trips.length === 0 ? (
+                <Text style={styles.emptyText}>{currentText.noTrips}</Text>
+              ) : (
+                trips.map((item) => {
                   const currentSeats = selectedSeatsMap[item.id] || 1;
                   return (
-                    <View style={styles.tripCard3D}>
+                    <View key={item.id.toString()} style={styles.tripCard3D}>
                       <View style={styles.routeRow}>
                         <Text style={styles.routeText}>{item.origin} <Text style={{color: '#10B981'}}>➔</Text> {item.destination}</Text>
                         <Text style={styles.priceBadge}>{item.pricePerSeat} ETB</Text>
@@ -1547,20 +1548,19 @@ export default function HomeScreen() {
                       )}
                     </View>
                   );
-                }}
-                ListEmptyComponent={<Text style={styles.emptyText}>{currentText.noTrips}</Text>}
-              />
+                })
+              )}
             </View>
           )}
 
           {activeTab === 'bookings' && user.role === 'passenger' && (
             <View style={styles.content}>
               <Text style={styles.formTitle}>My Bookings & Radar</Text>
-              <FlatList
-                data={bookings}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                  <View style={[styles.tripCard3D, item.status === 'confirmed' && { borderColor: '#10B981', backgroundColor: '#F0FDF4' }]}>
+              {bookings.length === 0 ? (
+                <Text style={styles.emptyText}>{currentText.noBookings}</Text>
+              ) : (
+                bookings.map((item) => (
+                  <View key={item.id.toString()} style={[styles.tripCard3D, item.status === 'confirmed' && { borderColor: '#10B981', backgroundColor: '#F0FDF4' }]}>
                     <Text style={styles.routeText}>Route: {item.trip?.origin} ➔ {item.trip?.destination}</Text>
                     <Text style={styles.detailText}>💺 Seats Booked: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
                     <Text style={styles.detailText}>Status: <Text style={{fontWeight: '900', color: item.status === 'confirmed' ? '#10B981' : item.status === 'rejected' ? '#EF4444' : '#F59E0B'}}>
@@ -1582,20 +1582,19 @@ export default function HomeScreen() {
                       </View>
                     )}
                   </View>
-                )}
-                ListEmptyComponent={<Text style={styles.emptyText}>{currentText.noBookings}</Text>}
-              />
+                ))
+              )}
             </View>
           )}
 
           {activeTab === 'requests' && user.role === 'driver' && (
             <View style={styles.content}>
               <Text style={styles.formTitle}>Incoming Passenger Radar</Text>
-              <FlatList
-                data={bookings}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                  <View style={styles.tripCard3D}>
+              {bookings.length === 0 ? (
+                <Text style={styles.emptyText}>{currentText.noBookings}</Text>
+              ) : (
+                bookings.map((item) => (
+                  <View key={item.id.toString()} style={styles.tripCard3D}>
                     <Text style={styles.routeText}>Route: {item.tripOrigin} ➔ {item.tripDestination}</Text>
                     <Text style={styles.detailText}>👤 Booker: {item.passenger?.fullName} | 📞 {item.passenger?.phoneNumber}</Text>
                     <Text style={styles.detailText}>💺 Seats Requested: <Text style={{fontWeight: '900', color: '#10B981'}}>{item.seatsBooked}</Text></Text>
@@ -1621,14 +1620,13 @@ export default function HomeScreen() {
                       </View>
                     )}
                   </View>
-                )}
-                ListEmptyComponent={<Text style={styles.emptyText}>{currentText.noBookings}</Text>}
-              />
+                ))
+              )}
             </View>
           )}
 
           {activeTab === 'post' && user.role === 'driver' && (
-            <ScrollView contentContainerStyle={styles.formContainer}>
+            <View style={styles.formContainer}>
               <Text style={styles.formTitle}>{currentText.publishTitle}</Text>
               
               <Text style={styles.label}>{currentText.originPlaceholder}</Text>
@@ -1681,9 +1679,9 @@ export default function HomeScreen() {
               <TouchableOpacity style={styles.glowPrimaryBtn} onPress={handlePostTrip} activeOpacity={0.8}>
                 <Text style={styles.glowPrimaryBtnText}>{currentText.publishBtn}</Text>
               </TouchableOpacity>
-            </ScrollView>
+            </View>
           )}
-        </View>
+        </ScrollView>
       )}
     </SafeAreaView>
   );
@@ -1869,6 +1867,8 @@ const styles = StyleSheet.create({
   glowPrimaryBtnTextSmall: { color: '#FFFFFF', fontSize: 13, fontWeight: '800' },
   glossSecondaryBtnSmall: { flex: 1, backgroundColor: '#F1F5F9', paddingVertical: 12, borderRadius: 10, alignItems: 'center', borderWidth: 1, borderColor: '#CBD5E1' },
   glossSecondaryBtnTextSmall: { color: '#0F172A', fontSize: 13, fontWeight: '800' },
+  
+  dashboardScrollContainer: { paddingBottom: 50 },
   tabContainer3D: { flexDirection: 'row', backgroundColor: '#E2E8F0', padding: 6, margin: 12, borderRadius: 14 },
   tab3D: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 10 },
   activeTab3D: { backgroundColor: '#0F172A', elevation: 3 },
